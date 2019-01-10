@@ -1,6 +1,6 @@
 # MacTrack
-### [Trello](https://trello.com/b/3BbMPw4j/mac-track)
 A macronutrient calculator and diet tracker.
+#### [Group Trello](https://trello.com/b/3BbMPw4j/mac-track)
 
 ## Project Scope:
 The MVP of MacTrack will allow a user to generate an initial set of macronutrient targets. They will then be able to track their progress by adding foods to their day.
