@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS food_entry;
+DROP TABLE IF EXISTS exercise;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
@@ -27,3 +28,12 @@ CREATE TABLE food_entry (
   serving_size NUMERIC,
   serving_unit VARCHAR(255)
 );
+
+CREATE TABLE exercise (
+  id SERIAL PRIMARY KEY,
+  fk_users INTEGER REFERENCES users,
+  date VARCHAR(255),
+  name VARCHAR(255),
+  calories NUMERIC
+);
+
