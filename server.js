@@ -59,7 +59,7 @@ function renderHome(req, res){
 app.get(':id/dash/', renderDash);
 
 /////////add.ejs///////////
-app.get('/add/:type:id', renderAdd);
+app.get(':id/add/:type', renderAdd);
 
 function renderAdd(req, res){
   let type = req.params.type;
@@ -106,11 +106,11 @@ function renderDash (req, res) {
     var dateStr = '1/12/2019';
     return client.query(`SELECT * FROM food_entry`)
         .then(data => {
-            res.render('pages/dash', {food_e: data.rows, date: dateStr}); 
+            res.render('pages/dash.ejs', {food_entry: data.rows, date: dateStr}); 
         })
         .catch(err => {
-            res.render('pages/error', {err});
-        })
+            res.render('pages/error.ejs', {err});
+    })
 }
  
 
