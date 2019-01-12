@@ -49,24 +49,24 @@ client.on('error', err => console.log(err));
 //===========================
 
 /////////index.ejs///////////
-app.get('/', renderHome);
+// app.get('/', renderHome);
 
 /////////dash.ejs///////////
 app.get('/dash', renderDash);
 
-/////////add.ejs///////////
-app.get('/add/:type', renderAdd);
+// /////////add.ejs///////////
+// app.get('/add/:type', renderAdd);
 
-app.post('/search', search);
+// app.post('/search', search);
 
-app.get('/custom', custom);
-app.post('/history', history);
+// app.get('/custom', custom);
+// app.post('/history', history);
 
-/////////results.ejs///////////
-app.post('/custom', custom);
+// /////////results.ejs///////////
+// app.post('/custom', custom);
 
-/////////customize.ejs///////////
-app.post('/save', save);
+// /////////customize.ejs///////////
+// app.post('/save', save);
 
 
 
@@ -93,4 +93,4 @@ function renderDash (req, res) {
 //Chart JS
 //===========================
 
-var ctx = doocument.getElementByID('barChart').getContext('2d');
+// var ctx = document.getElementByID('barChart').getContext('2d');
