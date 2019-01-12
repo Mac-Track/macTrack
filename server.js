@@ -11,6 +11,7 @@ const cors = require('cors');
 const superagent = require('superagent');
 const pg = require('pg');
 const methodOverride = require('method-override');
+app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 3000;
 //===========================
@@ -50,23 +51,46 @@ client.on('error', err => console.log(err));
 
 /////////index.ejs///////////
 app.get('/', renderHome);
+function renderHome(req, res){
+  res.render('pages/index.ejs');
+}
 
 /////////dash.ejs///////////
-app.get('/dash', renderDash);
+// app.get('/dash', renderDash);
 
 /////////add.ejs///////////
-app.get('/add/:type', renderAdd);
+app.get('/add/:type:id', renderAdd);
 
-app.post('/search', search);
+function renderAdd(req, res){
+  let type = req.params.type;
+  let id = req.params.id;
+  if(type === 'food'){
+    // send array of entries of type
+    let sql = 'SELECT * FROM food_entry WHERE fk_users=$1;';
+    let client = [id];
+    return client.query(sql, client)
+    .then(data => {
+      res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
+    })
+    // send type
+    
+  }
+  // .catch(err => handleError(err, res));
+}
 
-app.get('/custom', custom);
-app.post('/history', history);
+// app.post('/search', search);
+
+// app.get('/custom', custom);
+// app.post('/history', history);
 
 /////////results.ejs///////////
-app.post('/custom', custom);
+// app.post('/custom', custom);
 
 /////////customize.ejs///////////
-app.post('/save', save);
+// app.post('/save', save);
+
+
+app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 
 
 

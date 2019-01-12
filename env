@@ -1,2 +1,5 @@
-PORT=3000
 DATABASE_URL=postgres://sarkis7412:password@localhost:5432/mactrack
+PORT=3000
+X_APP_ID=1eed562a
+X_APP_KEY=c351a39f47aca8b7d4fe369c2115b3da
+
