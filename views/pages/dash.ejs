@@ -16,21 +16,12 @@
     <% food_entry.forEach (food => { %>
       <tr>
         <div id="addDash">
-<<<<<<< HEAD
-          <td> <%= food.image_url %> </td>
-          <td> <%= food.name %> </td>
-          <td> 'Protein:'<%= food.protein %> </td>
-          <td> 'Fat:'<%= food.fat %> </td>
-          <td> 'Carbs:'<%= food.carbs %> </td>
-          <td> 'Calories:'<%= food.calories %> </td>
-=======
           <img src=<%= food.image_url %>>
-          <h4> <%= food.name %> </h4>
-          <h4> <%= food.protein %> </h4>
-          <h4> <%= food.fat %> </h4>
-          <h4> <%= food.carbs %> </h4>
-          <h4> <%= food.calories %> </h4>
->>>>>>> 4650b9b295d872ec54021504b49b05d733efdd9f
+          <td> <%= food.name %> </td>
+          <td> <%= food.protein %> </td>
+          <td> <%= food.fat %> </td>
+          <td> <%= food.carbs %> </td>
+          <td> <%= food.calories %> </td>
         </div>
       </tr><br>
     </table> <%}) %>
