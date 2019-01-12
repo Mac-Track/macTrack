@@ -71,9 +71,28 @@ function signIn (req, res){
 
 ///////////register/////////////
 app.get('/register', renderRegister);
+app.post('/register', saveRegistration);
 
 function renderRegister (req, res){
   res.render('pages/register.ejs');
+}
+
+function saveRegistration (req, res){
+  let data = req.body;
+  let userHeight = (data.feet*12) + data.inches;
+  let newUser = new User(data.age, data.sex, data.weight, userHeight, data.activity_level);
+
+  let sql = `INSERT INTO users 
+              (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+              RETURNING id`;
+  let values = [
+    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee().calories
+  ];
+  return client.query(sql, values)
+    .then(result => {
+      res.redirect(`/dash/${result.rows[0].id}`);
+    })
+    .catch(err => console.log(err));
 }
 
 /////////dash.ejs///////////
@@ -126,7 +145,9 @@ app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 function renderDash (req, res) {
   var dateStr = '1/12/2019';
   let id = req.params.id;
-  return client.query('SELECT * FROM food_entry')
+  let sql = `SELECT * FROM food_entry WHERE fk_users=$1`;
+  let values = [id];
+  return client.query(sql, values)
     .then(data => {
       res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id});
     })
@@ -135,6 +156,41 @@ function renderDash (req, res) {
     });
 }
 
+////////////////constructor///////////////
+function User(age, sex, weight, height, activity_level) {
+  this.age = age;
+  this.sex = sex;
+  this.weight = parseFloat((weight / 2.2).toFixed(2));
+  this.height = parseFloat((height * 2.54).toFixed(2));
+  this.activity_level = activity_level;
+} 
+
+User.prototype.bmr = function() {
+  let result = (10 * this.weight) + (6.25 * this.height) - (5 * this.age);
+
+  if(this.sex === 'male'){
+    result += 5;
+  } else if(this.sex === 'female'){
+    result -= 161;
+  }
+
+  return parseInt(result);
+}
+
+User.prototype.tdee = function() {
+  return parseInt(this.bmr() * this.activityMultiplier);
+}
+
+User.prototype.macronutrients = function() {
+  let result = {};
+  let tdee = this.tdee();
+  
+  let protein = parseInt(this.weight * 0.8);
+  let fat = parseInt((tdee * 0.2) / 9);
+  let carbs = parseInt((tdee - (protein * 4) - (fat * 9)) / 4);
+  
+  return {"protein": protein, "fat": fat, "carbs": carbs};
+}
 
 //===========================
 //Chart JS
