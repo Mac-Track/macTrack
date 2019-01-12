@@ -56,10 +56,10 @@ function renderHome(req, res){
 }
 
 /////////dash.ejs///////////
-app.get(':id/dash/', renderDash);
+app.get('/dash/:id', renderDash);
 
 /////////add.ejs///////////
-app.get('/add/:type:id', renderAdd);
+app.get('/add/:id/:type', renderAdd);
 
 function renderAdd(req, res){
   let type = req.params.type;
@@ -67,8 +67,8 @@ function renderAdd(req, res){
   if(type === 'food'){
     // send array of entries of type
     let sql = 'SELECT * FROM food_entry WHERE fk_users=$1;';
-    let client = [id];
-    return client.query(sql, client)
+    let client_id = [id];
+    return client.query(sql, client_id)
     .then(data => {
       res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
     })
@@ -104,9 +104,10 @@ app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 
 function renderDash (req, res) {
     var dateStr = '1/12/2019';
+    let id = req.params.id;
     return client.query(`SELECT * FROM food_entry`)
         .then(data => {
-            res.render('pages/dash', {food_e: data.rows, date: dateStr}); 
+            res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id}); 
         })
         .catch(err => {
             res.render('pages/error', {err});
