@@ -56,7 +56,7 @@ function renderHome(req, res){
 }
 
 /////////dash.ejs///////////
-// app.get('/dash', renderDash);
+app.get(':id/dash/', renderDash);
 
 /////////add.ejs///////////
 app.get('/add/:type:id', renderAdd);
@@ -103,15 +103,16 @@ app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 //===========================
 
 function renderDash (req, res) {
+    var dateStr = '1/12/2019';
     return client.query(`SELECT * FROM food_entry`)
         .then(data => {
-            response.render('pages/dash', {data: data.rows});
+            res.render('pages/dash', {food_e: data.rows, date: dateStr}); 
         })
         .catch(err => {
-            response.render('pages/error', {err});
+            res.render('pages/error', {err});
         })
 }
-
+ 
 
 //===========================
 //Chart JS
