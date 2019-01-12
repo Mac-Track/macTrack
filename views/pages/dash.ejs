@@ -1,35 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Mac-Track Dashboard</title>
-</head>
-<body>
-
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/modules.css">
+    <title>Mac-Track Dashboard</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script> -->
+  
+  </head>
+  <body>
+  <div id="dashboard">
   <h2><% date %></h2>
-  <ul>
+  <table>
     <% food_entry.forEach (food => { %>
-      <li>
+      <tr>
         <div id="addDash">
-          <h4> <%= food.image_url %> </h4>
-          <h4> <%= food.name %> </h4>
-          <h4> <%= food.protein %> </h4>
-          <h4> <%= food.fat %> </h4>
-          <h4> <%= food.carbs %> </h4>
-          <h4> <%= food.calories %> </h4>
+          <td> <%= food.image_url %> </td>
+          <td> <%= food.name %> </td>
+          <td> 'Protein:'<%= food.protein %> </td>
+          <td> 'Fat:'<%= food.fat %> </td>
+          <td> 'Carbs:'<%= food.carbs %> </td>
+          <td> 'Calories:'<%= food.calories %> </td>
         </div>
-      </li>
-    </ul> <%}) %>
+      </tr><br>
+    </table> <%}) %>
   <form>
-    <input type="submit" value="Add Food" action="<%=id%>/dash" method="POST">
+    <a href="../add/<%= user_id %>/food">ADD FOOD</a>
+    <input type="submit" value="Add Food" action="add/<%= user_id %>/food" method="GET">
     <input type="submit" value="Add Exercise" action="/dash" method="POST">
     <input type="submit" value="Edit" action="/dash" method="POST">
   </form>
- <canvas id="barChart" width="50" height="50"></canvas>
+
+  <% include chart.html %>
+
+<div id="chartSize">
+ <canvas id="myChart"></canvas>
+
+ <script>
+
+  var ctx = document.getElementById("myChart").getContext('2d');
+ 
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["Protein", "Fat", "Carbs", "Calories"],
+        datasets: [{
+            label: 'Nutrition',
+            <% food_entry.forEach (food => { %>
+              <% var temp = 0; %>
+            data: ["<%= temp+= food.protein %>", "<%= temp+= food.fat %>", "<%= temp+= food.carbs %>", "<%= temp+= food.calories %>"],
+            <%}) %>
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+
+ </script>
+ </div>
+</div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="./chart.js"></script>
 </html>

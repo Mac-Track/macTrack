@@ -1,0 +1,31 @@
+#dashboard {
+    width: 50%;
+    height: 50%;
+  padding: 1px;
+}
+
+#chartSize {
+    width: 60%;
+    float: right;
+}
+
+
+#myChart {
+    background-color: lightcyan;
+    margin-top: 0%;
+    margin-left: 120%;
+}
+
+table {
+    border-collapse: collapse; 
+    /* border: 1pt solid black; */
+
+}
+
+table tr {
+    height: 120%;
+}
+
+table td {
+    padding: 10%;
+}
