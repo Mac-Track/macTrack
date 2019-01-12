@@ -18,10 +18,10 @@
         <div id="addDash">
           <img src=<%= food.image_url %>>
           <td> <%= food.name %> </td>
-          <td> <%= food.protein %> </td>
-          <td> <%= food.fat %> </td>
-          <td> <%= food.carbs %> </td>
-          <td> <%= food.calories %> </td>
+          <td> 'Protein: '<%= food.protein %> </td>
+          <td> 'Fat: '<%= food.fat %> </td>
+          <td> 'Carbs: '<%= food.carbs %> </td>
+          <td> 'Calories: '<%= food.calories %> </td>
         </div>
       </tr><br>
     </table> <%}) %>
@@ -47,8 +47,8 @@
         labels: ["Protein", "Fat", "Carbs", "Calories"],
         datasets: [{
             label: 'Nutrition',
+            <% var temp = 0; %>
             <% food_entry.forEach (food => { %>
-              <% var temp = 0; %>
             data: ["<%= temp+= food.protein %>", "<%= temp+= food.fat %>", "<%= temp+= food.carbs %>", "<%= temp+= food.calories %>"],
             <%}) %>
             backgroundColor: [
