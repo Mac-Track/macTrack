@@ -9,6 +9,7 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "method-override": "^3.0.0",
+    "nodemon": "^1.18.9",
     "pg": "^7.7.1",
     "superagent": "^4.1.0"
   },
