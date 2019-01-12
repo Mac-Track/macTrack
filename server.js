@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 
 //==========================
@@ -54,6 +54,27 @@ app.get('/', renderHome);
 function renderHome(req, res){
   res.render('pages/index.ejs');
 }
+/////////sign_in////////////
+app.post('/sign_in', signIn);
+
+function signIn (req, res){
+  let sql = 'SELECT id FROM users WHERE name=$1';
+  let values = [req.body.user];
+  return client.query(sql, values)
+    .then(result => {
+      console.log(result.rows[0]);
+      res.redirect(`/dash/${result.rows[0].id}`);
+    })
+    .catch(err => console.log(err));
+}
+
+
+///////////register/////////////
+app.get('/register', renderRegister);
+
+function renderRegister (req, res){
+  res.render('pages/register.ejs');
+}
 
 /////////dash.ejs///////////
 app.get('/dash/:id', renderDash);
@@ -69,11 +90,11 @@ function renderAdd(req, res){
     let sql = 'SELECT * FROM food_entry WHERE fk_users=$1;';
     let client_id = [id];
     return client.query(sql, client_id)
-    .then(data => {
-      res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
-    })
+      .then(data => {
+        res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
+      });
     // send type
-    
+
   }
   // .catch(err => handleError(err, res));
 }
@@ -103,17 +124,20 @@ app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 //===========================
 
 function renderDash (req, res) {
-    var dateStr = '1/12/2019';
-    let id = req.params.id;
-    return client.query(`SELECT * FROM food_entry`)
-        .then(data => {
-            res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id}); 
-        })
-        .catch(err => {
-            res.render('pages/error.ejs', {err});
+  var dateStr = '1/12/2019';
+  let id = req.params.id;
+  return client.query('SELECT * FROM food_entry')
+    .then(data => {
+      res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id});
     })
+    .catch(err => {
+      res.render('pages/error', {err});
+    });
 }
- 
 
-var labels = ['label 1', 'label 2'];
-var data = ['datapoint1', 'datapoint2'];
+
+//===========================
+//Chart JS
+//===========================
+
+// var ctx = document.getElementByID('barChart').getContext('2d');

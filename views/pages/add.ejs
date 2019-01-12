@@ -11,7 +11,7 @@
 <% console.log(entries); %>
 <% console.log(search_type); %>
 <% console.log(user_id); %>
-
+<!-- res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id}); -->
 
     <form action="">
         <input type="text" name="" id="">
@@ -25,11 +25,18 @@
         <label for="history">History:</label>
         <br>
         <br>
-        <input type="checkbox" name="food" value="food-item"> Egg<br>
-        <input type="checkbox" name="food" value="food-item"> Bacon<br>
-        <input type="checkbox" name="food" value="food-item"> Chicken<br>
-        <input type="checkbox" name="food" value="food-item"> Avocado<br>
-        <input type="checkbox" name="food" value="food-item"> Steak<br>
+        <section>
+            <% entries.forEach(entry => { %>
+                <div>
+                    <img src=<%= entry.image_url %>>
+                    <h2> <%= entry.name %></h2>
+                    <p>calories <%= entry.calories %></p>
+                    <p>protein <%= entry.protein %></p>
+                    <p>fat <%= entry.fat %></p>
+                    <p>carbs <%= entry.carbs %></p>
+                </div>
+           <% }) %>
+        </section>
         <br>
         <input type="submit" value="Submit">
 
