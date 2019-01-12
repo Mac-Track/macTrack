@@ -27,6 +27,24 @@ require('dotenv').config();
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
+
+//===========================
+//EJS
+//===========================
+
+app.set('view engine', 'ejs');
+
+//=======================
+// Database - PostgresSQL
+//=======================
+
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
+
+client.on('error', err => console.log(err));
+
+
+
 //===========================
 //Routes
 //===========================
@@ -77,3 +95,26 @@ app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 
 
 
+
+
+
+//===========================
+//Dashboard Function
+//===========================
+
+function renderDash (req, res) {
+    return client.query(`SELECT * FROM food_entry`)
+        .then(data => {
+            response.render('pages/dash', {data: data.rows});
+        })
+        .catch(err => {
+            response.render('pages/error', {err});
+        })
+}
+
+
+//===========================
+//Chart JS
+//===========================
+
+var ctx = doocument.getElementByID('barChart').getContext('2d');

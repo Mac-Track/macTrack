@@ -7,13 +7,29 @@
   <title>Mac-Track Dashboard</title>
 </head>
 <body>
-  <h2>Date will be here</h2>
-  <div id="addDash"><img src="https://placeholder.pics/svg/500x500/33A0FF-BFFF68"></div>
+ 
+  <h2><%= date %></h2>
+  <ul>
+    <% food_entry.forEach (food => { %>
+      <li>
+        <div id="addDash">
+          <h4> <%= food.image_url %> </h4>
+          <h4> <%= food.name %> </h4>
+          <h4> <%= food.protein %> </h4>
+          <h4> <%= food.fat %> </h4>
+          <h4> <%= food.carbs %> </h4>
+          <h4> <%= food.calories %> </h4>
+        </div>
+      </li>
+    </ul> <%}) %>
   <form>
-    <input type="submit" value="Add Food">
-    <input type="submit" value="Add Exercise">
-    <input type="submit" value="Edit">
+    <input type="submit" value="Add Food" action="/dash" method="POST">
+    <input type="submit" value="Add Exercise" action="/dash" method="POST">
+    <input type="submit" value="Edit" action="/dash" method="POST">
   </form>
-  <script src="server.js"></script>
+ <canvas id="barChart" width="50" height="50"></canvas>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="./chart.js"></script>
 </html>
