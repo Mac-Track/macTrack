@@ -1,35 +1,34 @@
 'use strict';
 
-
 //==========================
 // Application Dependencies
 //==========================
 
 const express = require('express');
 const app = express();
-const cors = require('cors');
+const cors = require('cors'); 
 const superagent = require('superagent');
 const pg = require('pg');
 const methodOverride = require('method-override');
 app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 3000;
+
 //===========================
-//Load Environment Variables
+// Load Environment Variables
 //===========================
 
 require('dotenv').config();
 
 //===========================
-//Middleware
+// Middleware
 //===========================
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
 
-
 //===========================
-//EJS
+// EJS
 //===========================
 
 app.set('view engine', 'ejs');
@@ -43,17 +42,17 @@ client.connect();
 
 client.on('error', err => console.log(err));
 
-
-
 //===========================
-//Routes
+// Routes
 //===========================
 
 /////////index.ejs///////////
 app.get('/', renderHome);
+
 function renderHome(req, res){
   res.render('pages/index.ejs');
 }
+
 /////////sign_in////////////
 app.post('/sign_in', signIn);
 
@@ -62,12 +61,10 @@ function signIn (req, res){
   let values = [req.body.user];
   return client.query(sql, values)
     .then(result => {
-      console.log(result.rows[0]);
       res.redirect(`/dash/${result.rows[0].id}`);
     })
     .catch(err => console.log(err));
 }
-
 
 ///////////register/////////////
 app.get('/register', renderRegister);
@@ -104,91 +101,118 @@ app.get('/add/:id/:type', renderAdd);
 function renderAdd(req, res){
   let type = req.params.type;
   let id = req.params.id;
-  if(type === 'food'){
-    // send array of entries of type
-    let sql = 'SELECT * FROM food_entry WHERE fk_users=$1;';
-    let client_id = [id];
-    return client.query(sql, client_id)
-      .then(data => {
-        res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
-      });
-    // send type
+  let table = '';
 
+  if(type === 'food'){
+    table = 'food_entry';
+  } else if(type === 'exercise'){
+    table = 'exercise';
   }
-  // .catch(err => handleError(err, res));
+
+  let sql = `SELECT * FROM ${table} WHERE fk_users=$1;`;
+  let client_id = [id];
+  return client.query(sql, client_id)
+    .then(data => {
+      res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
+    })
+    .catch(err => console.log(err));
 }
 
-//=======
+
+//===========================
 // Search
-//=======
+//===========================
 
 app.post('/search', search);
 
 function search(req, res){
   let data = req.body;
+  let type = data.search_type;
+  let id = data.user_id;
   let url = `https://trackapi.nutritionix.com/v2/`;
-  if(data.search_type === 'food'){
-    url += 'search/instant';
-  } else if(data.search_type === 'exercise'){
-    url += 'natural/exercise';
+
+  if(type === 'food'){
+    url += `search/instant?query=${req.body.query}&detailed=true`;
+    foodSearch(url, res);
+  } else if(type === 'exercise'){
+    url += `natural/exercise`;
+    exerciseSearch(url, id, req.body.query, res);
   }
-  url += `?query=${req.body.query}&detailed=true`;
+}
 
-  // Two arrays
-  // result.res.text.common
-  // result.res.text.branded
-  // Protein ID=203
-  // Fat ID=204
-  // Carbs ID=205
-  // Calories ID=208
-
+function foodSearch(url, res){
   return superagent.get(url)
-    .set('Content-Type', 'application/json')
-    .set('x-app-id', `${process.env.X_APP_ID}`)
-    .set('x-app-key', `${process.env.X_APP_KEY}`)  
-    .then(result => {
-      // console.log(JSON.parse(result.res.text));
-      let common = JSON.parse(result.res.text);
-      console.log(common.common[0].full_nutrients);
-      let branded = JSON.parse(result.res.text);
+  .set('Content-Type', 'application/json')
+  .set('x-app-id', `${process.env.X_APP_ID}`)
+  .set('x-app-key', `${process.env.X_APP_KEY}`)  
+  .then(result => {
+    let common = JSON.parse(result.res.text);
+    let branded = JSON.parse(result.res.text);
 
-      let foods = [];
-      for(let i = 0; i < 10; i++){
-        // COMMON
-        let commonProtein = 0;
-        let commonFat = 0;
-        let commonCarbs = 0;
-        let commonCalories = 0;
+    let foods = [];
+    for(let i = 0; i < 10; i++){
+      // COMMON
+      let commonProtein = 0;
+      let commonFat = 0;
+      let commonCarbs = 0;
+      let commonCalories = 0;
 
-        for(let j = 0; j < common.common[i].full_nutrients.length; j++){
-          if(common.common[i].full_nutrients[j].attr_id === 203) commonProtein = common.common[i].full_nutrients[j].value;
-          if(common.common[i].full_nutrients[j].attr_id === 204) commonFat = common.common[i].full_nutrients[j].value;
-          if(common.common[i].full_nutrients[j].attr_id === 205) commonCarbs = common.common[i].full_nutrients[j].value;
-          if(common.common[i].full_nutrients[j].attr_id === 208) commonCalories = common.common[i].full_nutrients[j].value;
-        }
-        let test = new Food(common.common[i].food_name, common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit);
-        console.log(test)
-        foods.push(test);
+      for(let j = 0; j < common.common[i].full_nutrients.length; j++){
+        if(common.common[i].full_nutrients[j].attr_id === 203) commonProtein = common.common[i].full_nutrients[j].value;
+        if(common.common[i].full_nutrients[j].attr_id === 204) commonFat = common.common[i].full_nutrients[j].value;
+        if(common.common[i].full_nutrients[j].attr_id === 205) commonCarbs = common.common[i].full_nutrients[j].value;
+        if(common.common[i].full_nutrients[j].attr_id === 208) commonCalories = common.common[i].full_nutrients[j].value;
+      }
+      
+      foods.push(new Food(common.common[i].food_name, common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit));
 
-        // Branded
-        let brandedProtein = 0;
-        let brandedFat = 0;
-        let brandedCarbs = 0;
-        let brandedCalories = 0;
+      // Branded
+      let brandedProtein = 0;
+      let brandedFat = 0;
+      let brandedCarbs = 0;
+      let brandedCalories = 0;
 
-        for(let k = 0; k < branded.branded[i].full_nutrients.length; k++){
-          if(branded.branded[i].full_nutrients[k].attr_id === 203) brandedProtein = branded.branded[i].full_nutrients[k].value;
-          if(branded.branded[i].full_nutrients[k].attr_id === 204) brandedFat = branded.branded[i].full_nutrients[k].value;
-          if(branded.branded[i].full_nutrients[k].attr_id === 205) brandedCarbs = branded.branded[i].full_nutrients[k].value;
-          if(branded.branded[i].full_nutrients[k].attr_id === 208) brandedCalories = branded.branded[i].full_nutrients[k].value;
-        }
-        foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
+      for(let k = 0; k < branded.branded[i].full_nutrients.length; k++){
+        if(branded.branded[i].full_nutrients[k].attr_id === 203) brandedProtein = branded.branded[i].full_nutrients[k].value;
+        if(branded.branded[i].full_nutrients[k].attr_id === 204) brandedFat = branded.branded[i].full_nutrients[k].value;
+        if(branded.branded[i].full_nutrients[k].attr_id === 205) brandedCarbs = branded.branded[i].full_nutrients[k].value;
+        if(branded.branded[i].full_nutrients[k].attr_id === 208) brandedCalories = branded.branded[i].full_nutrients[k].value;
       }
 
-      res.render('pages/results.ejs', {data: foods});
+      foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
+    }
+
+    res.render('pages/results.ejs', {data: foods, search_type: 'food'});
+  })
+  .catch(err => console.log(err));
+}
+
+function exerciseSearch(url, id, query, res){
+  let sql = `SELECT age, sex, height, weight FROM users WHERE id=$1`;
+  let values = [id];
+  return client.query(sql, values)
+    .then(result => {
+      
+      return superagent.post(url)
+        .send({
+          query: query,
+          gender: result.sex,
+          weight_kg: parseInt(result.weight),
+          height_cm: parseInt(result.height),
+          age: parseInt(result.age)
+        })
+        .set('Content-Type', 'application/json')
+        .set('x-app-id', `${process.env.X_APP_ID}`)
+        .set('x-app-key', `${process.env.X_APP_KEY}`)  
+        .then(result => {
+          let results = JSON.parse(result.res.text);
+          results = results.exercises[0];
+          console.log(results);
+          let exerciseData = new Exercise(results.name, results.nf_calories, results.photo.thumb);
+          res.render('pages/results.ejs', {data: exerciseData, search_type: 'exercise'});
+        })
     })
     .catch(err => console.log(err));
-
 }
 
 // app.get('/custom', custom);
@@ -203,14 +227,8 @@ function search(req, res){
 
 app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 
-
-
-
-
-
-
 //===========================
-//Dashboard Function
+// Dashboard Function
 //===========================
 
 function renderDash (req, res) {
@@ -227,7 +245,10 @@ function renderDash (req, res) {
     });
 }
 
-////////////////constructor///////////////
+//===========================
+// Constructors
+//===========================
+
 function User(name, age, sex, weight, height, activity_level) {
   this.name = name;
   this.age = age;
@@ -254,7 +275,6 @@ User.prototype.tdee = function() {
 }
 
 User.prototype.macronutrients = function() {
-  let result = {};
   let tdee = this.tdee();
   
   let protein = parseInt(this.weight * 0.8);
@@ -275,8 +295,14 @@ function Food(name, image_url, calories, carbs, fat, protein, serving_size, serv
   this.serving_unit = serving_unit;
 }
 
+function Exercise(name, calories, image_url){
+  this.name = name;
+  this.calories = calories;
+  this.image_url = image_url;
+}
+
 //===========================
-//Chart JS
+// Chart JS
 //===========================
 
 // var ctx = document.getElementByID('barChart').getContext('2d');

@@ -8,9 +8,28 @@
 </head>
 <body>
   <main>
-    <% data.forEach(food => { %>
-      <p><%= food.name %></p>
-    <% }) %>
+
+    <% if(search_type === 'food'){ %>
+      <% data.forEach(food => { %>
+        <div class="food-result">
+          <h2><%= food.name %></h2>
+          <img src=<%= food.image_url %> alt=<%= food.name %>>
+          <p>Serving Size: <%= food.serving_size %></p>
+          <p>Serving Unit: <%= food.serving_unit %></p>
+          <p>Protein: <%= food.protein %></p>
+          <p>Fat: <%= food.fat %></p>
+          <p>Carbs: <%= food.carbs %></p>
+          <p>Calories: <%= food.calories %></p>
+        </div>
+      <% }) %>
+
+    <% } else if(search_type === 'exercise'){ %>
+      <div class="exercise-result">
+          <h2><%= data.name %></h2>
+          <img src=<%= data.image_url %> alt=<%= data.name %>>
+          <p>Calories Burned: <%= data.calories %></p>
+        </div>
+    <% } %>
   </main>
 </body>
 </html>
