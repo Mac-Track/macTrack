@@ -8,42 +8,115 @@
 </head>
 <body>
   <main>
-    <!-- Blank Food Form -->
-    <form action="/save" method="POST">
-      <img src="" alt="">
+    <% if(data.type === 'new_food'){ %>
+      <!-- Blank Food Form -->
+      <form action="/save" method="POST">
       
-      <label for="name">
-        Name
-        <input type="text" name="name" placeholder="Name">
-      </label>
-      <label for="image_url">
-        Image URL
-        <input type="text" name="image_url" placeholder="Image URL">
-      </label>
-      <label for="protein">
-        Protein
-        <input type="text" name="protein" placeholder="Protein">
-      </label>
-      <label for="fat">
-        Fat
-        <input type="text" name="fat" placeholder="Fat">
-      </label>
-      <label for="carbs">
-        Carbs
-        <input type="text" name="Carbs" placeholder="Carbs">
-      </label>
-      <label for="serving_size">
-        Serving Size
-        <input type="text" name="serving_size" placeholder="Serving Size">
-      </label>
-      <label for="serving_unit">
-        Serving Unit
-        <input type="text" name="serving_unit" placeholder="Serving Unit">
-      </label>
-      
-      <input type="submit" value="Submit">
+        <label for="name">
+          Name
+          <input type="text" name="name" placeholder="Name">
+        </label>
+        <label for="image_url">
+          Image URL
+          <input type="text" name="image_url" placeholder="Image URL">
+        </label>
+        <label for="protein">
+          Protein
+          <input type="text" name="protein" placeholder="Protein">
+        </label>
+        <label for="fat">
+          Fat
+          <input type="text" name="fat" placeholder="Fat">
+        </label>
+        <label for="carbs">
+          Carbs
+          <input type="text" name="Carbs" placeholder="Carbs">
+        </label>
+        <label for="serving_size">
+          Serving Size
+          <input type="text" name="serving_size" placeholder="Serving Size">
+        </label>
+        <label for="serving_unit">
+          Serving Unit
+          <input type="text" name="serving_unit" placeholder="Serving Unit">
+        </label>
+        
+        <input type="submit" value="Submit">
+  
+      </form>
 
-    </form>
+    <% } else if(data.type === 'food'){ %>
+      <form action="/save" method="POST">
+        <img src=<%= data.image_url %> alt=<%= data.name %>>
+        
+        <label for="name">
+          Name
+          <input type="text" name="name" placeholder="Name" value=<%= data.name %>>
+        </label>
+        <label for="image_url">
+          Image URL
+          <input type="text" name="image_url" placeholder="Image URL" value=<%= data.image_url %>>
+        </label>
+        <label for="protein">
+          Protein
+          <input type="text" name="protein" placeholder="Protein" value=<%= data.protein %>>
+        </label>
+        <label for="fat">
+          Fat
+          <input type="text" name="fat" placeholder="Fat" value=<%= data.fat %>>
+        </label>
+        <label for="carbs">
+          Carbs
+          <input type="text" name="Carbs" placeholder="Carbs" value=<%= data.carbs %>>
+        </label>
+        <label for="serving_size">
+          Serving Size
+          <input type="text" name="serving_size" placeholder="Serving Size" value=<%= data.serving_size %>>
+        </label>
+        <label for="serving_unit">
+          Serving Unit
+          <input type="text" name="serving_unit" placeholder="Serving Unit" value=<%= data.serving_unit %>>
+        </label>
+        
+        <input type="submit" value="Submit">
+  
+      </form>
+    <% } else if(data.type === 'exercise'){ %>
+      <form action="/save" method="POST">
+        <img src=<%= data.image_url %> alt=<%= data.name %>>
+        
+        <label for="name">
+          Name
+          <input type="text" name="name" placeholder="Name" value=<%= data.name %>>
+        </label>
+        <label for="image_url">
+          Image URL
+          <input type="text" name="image_url" placeholder="Image URL"value=<%= data.image_url %>>
+        </label>
+        <label for="calories">
+          Calories
+          <input type="text" name="calories" placeholder="Calories"value=<%= data.calories %>>
+        </label>
+        
+        <input type="submit" value="Submit">
+    <% } else if(data.type === 'new_exercise'){ %>
+      <form action="/save" method="POST">
+        
+        <label for="name">
+          Name
+          <input type="text" name="name" placeholder="Name">
+        </label>
+        <label for="image_url">
+          Image URL
+          <input type="text" name="image_url" placeholder="Image URL">
+        </label>
+        <label for="carbs">
+          Calories
+          <input type="text" name="calories" placeholder="Calories">
+        </label>
+        
+        <input type="submit" value="Submit">
+    <% } %>
   </main>
 </body>
 </html>

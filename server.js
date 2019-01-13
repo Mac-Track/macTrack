@@ -221,9 +221,8 @@ function exerciseSearch(url, id, query, res){
 app.post('/custom', custom);
 
 function custom(req, res){
-// determine the type of entry selected, exercise or food
-// turn back into an object for easy pass-through
-// render the custom page with the appropriate form type
+  let selectionData = req.body;
+  res.render('pages/customize.ejs', {data: selectionData})
 }
 
 
