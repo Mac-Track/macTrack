@@ -80,7 +80,7 @@ function renderRegister (req, res){
 function saveRegistration (req, res){
   let data = req.body;
   let userHeight = (data.feet*12) + data.inches;
-  let newUser = new User(data.age, data.sex, data.weight, userHeight, data.activity_level);
+  let newUser = new User(data.name, data.age, data.sex, data.weight, userHeight, data.activity_level);
 
   let sql = `INSERT INTO users 
               (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
@@ -157,7 +157,8 @@ function renderDash (req, res) {
 }
 
 ////////////////constructor///////////////
-function User(age, sex, weight, height, activity_level) {
+function User(name, age, sex, weight, height, activity_level) {
+  this.name = name;
   this.age = age;
   this.sex = sex;
   this.weight = parseFloat((weight / 2.2).toFixed(2));
