@@ -35,7 +35,8 @@ CREATE TABLE exercise (
   fk_users INTEGER REFERENCES users,
   date VARCHAR(255),
   name VARCHAR(255),
-  calories NUMERIC
+  calories NUMERIC,
+  image_url VARCHAR(255)
 );
 
 INSERT INTO users (

@@ -7,15 +7,11 @@
     <title>Food Entry</title>
 </head>
 <body>
-<!-- test -->
-<% console.log(entries); %>
-<% console.log(search_type); %>
-<% console.log(user_id); %>
-<!-- res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id}); -->
 
     <form action="/search" method="POST">
         <input type="text" name="query">
         <input type="hidden" name="search_type" value=<%= search_type %>>
+        <input type="hidden" name="user_id" value=<%= user_id %>>
         <button type="submit">Search Nutritionix</button>
     </form>
 
