@@ -118,7 +118,78 @@ function renderAdd(req, res){
   // .catch(err => handleError(err, res));
 }
 
-// app.post('/search', search);
+//=======
+// Search
+//=======
+
+app.post('/search', search);
+
+function search(req, res){
+  let data = req.body;
+  let url = `https://trackapi.nutritionix.com/v2/`;
+  if(data.search_type === 'food'){
+    url += 'search/instant';
+  } else if(data.search_type === 'exercise'){
+    url += 'natural/exercise';
+  }
+  url += `?query=${req.body.query}&detailed=true`;
+
+  // Two arrays
+  // result.res.text.common
+  // result.res.text.branded
+  // Protein ID=203
+  // Fat ID=204
+  // Carbs ID=205
+  // Calories ID=208
+
+  return superagent.get(url)
+    .set('Content-Type', 'application/json')
+    .set('x-app-id', `${process.env.X_APP_ID}`)
+    .set('x-app-key', `${process.env.X_APP_KEY}`)  
+    .then(result => {
+      // console.log(JSON.parse(result.res.text));
+      let common = JSON.parse(result.res.text);
+      console.log(common.common[0].full_nutrients);
+      let branded = JSON.parse(result.res.text);
+
+      let foods = [];
+      for(let i = 0; i < 10; i++){
+        // COMMON
+        let commonProtein = 0;
+        let commonFat = 0;
+        let commonCarbs = 0;
+        let commonCalories = 0;
+
+        for(let j = 0; j < common.common[i].full_nutrients.length; j++){
+          if(common.common[i].full_nutrients[j].attr_id === 203) commonProtein = common.common[i].full_nutrients[j].value;
+          if(common.common[i].full_nutrients[j].attr_id === 204) commonFat = common.common[i].full_nutrients[j].value;
+          if(common.common[i].full_nutrients[j].attr_id === 205) commonCarbs = common.common[i].full_nutrients[j].value;
+          if(common.common[i].full_nutrients[j].attr_id === 208) commonCalories = common.common[i].full_nutrients[j].value;
+        }
+        let test = new Food(common.common[i].food_name, common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit);
+        console.log(test)
+        foods.push(test);
+
+        // Branded
+        let brandedProtein = 0;
+        let brandedFat = 0;
+        let brandedCarbs = 0;
+        let brandedCalories = 0;
+
+        for(let k = 0; k < branded.branded[i].full_nutrients.length; k++){
+          if(branded.branded[i].full_nutrients[k].attr_id === 203) brandedProtein = branded.branded[i].full_nutrients[k].value;
+          if(branded.branded[i].full_nutrients[k].attr_id === 204) brandedFat = branded.branded[i].full_nutrients[k].value;
+          if(branded.branded[i].full_nutrients[k].attr_id === 205) brandedCarbs = branded.branded[i].full_nutrients[k].value;
+          if(branded.branded[i].full_nutrients[k].attr_id === 208) brandedCalories = branded.branded[i].full_nutrients[k].value;
+        }
+        foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
+      }
+
+      res.render('pages/results.ejs', {data: foods});
+    })
+    .catch(err => console.log(err));
+
+}
 
 // app.get('/custom', custom);
 // app.post('/history', history);
@@ -191,6 +262,17 @@ User.prototype.macronutrients = function() {
   let carbs = parseInt((tdee - (protein * 4) - (fat * 9)) / 4);
   
   return {"protein": protein, "fat": fat, "carbs": carbs};
+}
+
+function Food(name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
+  this.name = name;
+  this.image_url = image_url;
+  this.calories = calories;
+  this.carbs = carbs;
+  this.fat = fat;
+  this.protein = protein;
+  this.serving_size = serving_size;
+  this.serving_unit = serving_unit;
 }
 
 //===========================

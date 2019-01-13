@@ -13,11 +13,13 @@
 <% console.log(user_id); %>
 <!-- res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id}); -->
 
-    <form action="">
-        <input type="text" name="" id="">
-        <input type="submit" value="Search Nutritionix">
-        <button>Create Custom Entry</button>
+    <form action="/search" method="POST">
+        <input type="text" name="query">
+        <input type="hidden" name="search_type" value=<%= search_type %>>
+        <button type="submit">Search Nutritionix</button>
     </form>
+
+    <button>Create Custom Entry</button>
     <form action="">
         <div class="form">
         <div class="checkbox-container">
