@@ -118,7 +118,6 @@ function renderAdd(req, res){
     .catch(err => console.log(err));
 }
 
-
 //===========================
 // Search
 //===========================
@@ -133,14 +132,14 @@ function search(req, res){
 
   if(type === 'food'){
     url += `search/instant?query=${req.body.query}&detailed=true`;
-    foodSearch(url, res);
+    foodSearch(url, id, res);
   } else if(type === 'exercise'){
     url += `natural/exercise`;
     exerciseSearch(url, id, req.body.query, res);
   }
 }
 
-function foodSearch(url, res){
+function foodSearch(url, id, res){
   return superagent.get(url)
   .set('Content-Type', 'application/json')
   .set('x-app-id', `${process.env.X_APP_ID}`)
@@ -166,7 +165,7 @@ function foodSearch(url, res){
       
       foods.push(new Food(common.common[i].food_name, common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit));
 
-      // Branded
+      // BRANDED
       let brandedProtein = 0;
       let brandedFat = 0;
       let brandedCarbs = 0;
@@ -182,7 +181,7 @@ function foodSearch(url, res){
       foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
     }
 
-    res.render('pages/results.ejs', {data: foods, search_type: 'food'});
+    res.render('pages/results.ejs', {data: foods, search_type: 'food', user_id: id});
   })
   .catch(err => console.log(err));
 }
@@ -209,19 +208,28 @@ function exerciseSearch(url, id, query, res){
           results = results.exercises[0];
           console.log(results);
           let exerciseData = new Exercise(results.name, results.nf_calories, results.photo.thumb);
-          res.render('pages/results.ejs', {data: exerciseData, search_type: 'exercise'});
+          res.render('pages/results.ejs', {data: exerciseData, search_type: 'exercise', user_id: id});
         })
     })
     .catch(err => console.log(err));
 }
 
+//===========================
+// Customize
+//===========================
+
+app.post('/custom', custom);
+
+function custom(req, res){
+// determine the type of entry selected, exercise or food
+// turn back into an object for easy pass-through
+// render the custom page with the appropriate form type
+}
+
+
+
 // app.get('/custom', custom);
 // app.post('/history', history);
-
-/////////results.ejs///////////
-// app.post('/custom', custom);
-
-/////////customize.ejs///////////
 // app.post('/save', save);
 
 

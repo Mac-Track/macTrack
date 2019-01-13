@@ -20,6 +20,19 @@
           <p>Fat: <%= food.fat %></p>
           <p>Carbs: <%= food.carbs %></p>
           <p>Calories: <%= food.calories %></p>
+          
+          <form action="/custom" method="POST">
+            <input type="hidden" name="name" value=<%= food.name %>>
+            <input type="hidden" name="image_url" value=<%= food.image_url %>>
+            <input type="hidden" name="serving_size" value=<%= food.serving_size %>>
+            <input type="hidden" name="serving_unit" value=<%= food.serving_unit %>>
+            <input type="hidden" name="protein" value=<%= food.protein %>>
+            <input type="hidden" name="fat" value=<%= food.fat %>>
+            <input type="hidden" name="carbs" value=<%= food.carbs %>>
+            <input type="hidden" name="calories" value=<%= food.calories %>>
+            <input type="hidden" name="type" value="food">
+            <button type="submit">Select</button>
+          </form>
         </div>
       <% }) %>
 
@@ -28,6 +41,14 @@
           <h2><%= data.name %></h2>
           <img src=<%= data.image_url %> alt=<%= data.name %>>
           <p>Calories Burned: <%= data.calories %></p>
+          
+          <form action="/custom" method="POST">
+            <input type="hidden" name="name" value=<%= data.name %>>
+            <input type="hidden" name="image_url" value=<%= data.image_url %>>
+            <input type="hidden" name="calories" value=<%= data.calories %>>
+            <input type="hidden" name="type" value="exercise">
+            <button type="submit">Select</button>
+          </form>
         </div>
     <% } %>
   </main>
