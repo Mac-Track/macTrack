@@ -193,8 +193,3 @@ User.prototype.macronutrients = function() {
   return {"protein": protein, "fat": fat, "carbs": carbs};
 }
 
-//===========================
-//Chart JS
-//===========================
-
-// var ctx = document.getElementByID('barChart').getContext('2d');
