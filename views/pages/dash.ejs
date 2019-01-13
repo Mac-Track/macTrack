@@ -18,38 +18,41 @@
         <div id="addDash">
           <img src=<%= food.image_url %>>
           <td> <%= food.name %> </td>
-          <td> <%= food.protein %> </td>
-          <td> <%= food.fat %> </td>
-          <td> <%= food.carbs %> </td>
-          <td> <%= food.calories %> </td>
+          <td> 'Protein: '<%= food.protein %> </td>
+          <td> 'Fat: '<%= food.fat %> </td>
+          <td> 'Carbs: '<%= food.carbs %> </td>
+          <td> 'Calories: '<%= food.calories %> </td>
         </div>
       </tr><br>
     </table> <%}) %>
-  <form>
-    <a href="../add/<%= user_id %>/food">ADD FOOD</a>
-    <input type="submit" value="Add Food" action="add/<%= user_id %>/food" method="GET">
-    <input type="submit" value="Add Exercise" action="/dash" method="POST">
-    <input type="submit" value="Edit" action="/dash" method="POST">
-  </form>
-
-  <% include chart.html %>
-
-<div id="chartSize">
- <canvas id="myChart"></canvas>
-
- <script>
-
-  var ctx = document.getElementById("myChart").getContext('2d');
- 
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["Protein", "Fat", "Carbs", "Calories"],
-        datasets: [{
-            label: 'Nutrition',
-            <% food_entry.forEach (food => { %>
-              <% var temp = 0; %>
-            data: ["<%= temp+= food.protein %>", "<%= temp+= food.fat %>", "<%= temp+= food.carbs %>", "<%= temp+= food.calories %>"],
+    <form>
+      <a href="../add/<%= user_id %>/food">ADD FOOD</a>
+      <input type="submit" value="Add Food" action="add/<%= user_id %>/food" method="GET">
+      <input type="submit" value="Add Exercise" action="/dash" method="POST">
+      <input type="submit" value="Edit" action="/dash" method="POST">
+    </form>
+    
+    <% include chart.html %>
+    
+    <div id="chartSize">
+      <canvas id="myChart"></canvas>
+      
+      <script>
+        
+        var ctx = document.getElementById("myChart").getContext('2d');
+        
+        var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ["Protein", "Fat", "Carbs", "Calories"],
+            datasets: [{
+              label: 'Nutrition',
+              <% var tempPro = 0; %>
+              <% var tempFat = 0; %>
+              <% var tempCarb = 0; %>
+              <% var tempCal = 0; %>
+              <% food_entry.forEach (food => { %>
+            data: ["<%= tempPro+= parseInt(food.protein) %>", "<%= tempFat+= parseInt(food.fat) %>", "<%= tempCarb+= parseInt(food.carbs) %>", "<%= tempCal+= parseInt(food.calories) %>"],
             <%}) %>
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -68,6 +71,9 @@
     },
     options: {
         scales: {
+          xAxes: [{
+                stacked: true
+              }],
             yAxes: [{
                 ticks: {
                     beginAtZero:true
