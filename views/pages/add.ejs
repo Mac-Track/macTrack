@@ -16,7 +16,11 @@
     </form>
 
     <form action="/custom" method="POST">
-        <input type="hidden" name="search_type" value=<%= search_type %>>
+        <% let customType = ''; %>
+        <% if(search_type === 'food') customType = 'new_food'; %>
+        <% if(search_type === 'exercise') customType = 'new_exercise'; %>
+
+        <input type="hidden" name="type" value=<%= customType %>>
         <input type="hidden" name="user_id" value=<%= user_id %>>
         <button type="submit">Create Custom Entry</button>
     </form>

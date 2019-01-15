@@ -8,7 +8,7 @@
 </head>
 <body>
   <main>
-    <% if(data.search_type === 'new_food'){ %>
+    <% if(data.type === 'new_food'){ %>
       <!-- Blank Food Form -->
       <form action="/save" method="POST">
       
@@ -45,7 +45,7 @@
   
       </form>
 
-    <% } else if(data.search_type === 'food'){ %>
+    <% } else if(data.type === 'food'){ %>
       <form action="/save" method="POST">
         <img src=<%= data.image_url %> alt=<%= data.name %>>
         
@@ -81,7 +81,7 @@
         <input type="submit" value="Submit">
   
       </form>
-    <% } else if(data.search_type === 'exercise'){ %>
+    <% } else if(data.type === 'exercise'){ %>
       <form action="/save" method="POST">
         <img src=<%= data.image_url %> alt=<%= data.name %>>
         
@@ -99,7 +99,7 @@
         </label>
         
         <input type="submit" value="Submit">
-    <% } else if(data.search_type === 'new_exercise'){ %>
+    <% } else if(data.type === 'new_exercise'){ %>
       <form action="/save" method="POST">
         
         <label for="name">
