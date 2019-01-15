@@ -89,7 +89,7 @@ function saveRegistration (req, res){
     .then(result => {
       res.redirect(`/dash/${result.rows[0].id}`);
     })
-    .catch(err => console.log('||||||||||||||||||||||||saveRegistrayion error|||||||||||||||||||||||', err));
+    .catch(err => console.log('||||||||||||||||||||||||saveRegistration error|||||||||||||||||||||||', err));
 }
 
 /////////dash.ejs///////////
@@ -245,7 +245,7 @@ function custom(req, res) {
 
 
 // app.post('/history', history);
-app.post('/save', save);
+app.get('/save', save);
 
 
 //===========================
@@ -253,24 +253,29 @@ app.post('/save', save);
 //===========================
 
 function save (req, res) {
-  
   let newFood = new Food(req.body);
   let foodArray = Object.values(newFood);
   const SQL = `INSERT INTO food_entry
   (date, name, protein, fat, carbs, calories, serving_size, serving_unit)
-  VALUES($1, $2, $3, $4, $5, $6, $7, $8)`;
-  
+  VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`;
+  console.log('||||||||||||||||req.body|||||||||||||', req.body);
   if(Object.keys(foodArray[0]).length > 3) {
   return client.query(SQL, foodArray)
-  .then(res.redirect('/'))
-  .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
+  .then(data => {
+    console.log('||||||||||||||||save data|||||||||||||', data)
+    res.redirect(`/`);
+    })
+    .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
   }
-  else {
-   return client.query(`INSERT INTO exercise
-   (date, name, image_url, calories)
-   VALUES($1, $2, $3, $4)`)
-   .then(res.redirect('/'))
-   .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
+    else {
+      return client.query(`INSERT INTO exercise
+      (date, name, image_url, calories)
+      VALUES($1, $2, $3, $4)  RETURNING id`)
+      .then(data => {
+        console.log('||||||||||||||||save data|||||||||||||', data)
+        res.redirect(`/save/${data.rows[0].id}`)
+    })
+      .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));       
   }
 }
 
