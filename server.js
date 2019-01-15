@@ -246,6 +246,7 @@ function custom(req, res) {
 
 // app.post('/history', history);
 app.get('/save', save);
+app.post('/save', save);
 
 
 //===========================
@@ -259,24 +260,25 @@ function save (req, res) {
   (date, name, protein, fat, carbs, calories, serving_size, serving_unit)
   VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`;
   console.log('||||||||||||||||req.body|||||||||||||', req.body);
-  if(Object.keys(foodArray[0]).length > 3) {
-  return client.query(SQL, foodArray)
-  .then(data => {
-    console.log('||||||||||||||||save data|||||||||||||', data)
-    res.redirect(`/`);
-    })
-    .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
-  }
-    else {
-      return client.query(`INSERT INTO exercise
-      (date, name, image_url, calories)
-      VALUES($1, $2, $3, $4)  RETURNING id`)
-      .then(data => {
-        console.log('||||||||||||||||save data|||||||||||||', data)
-        res.redirect(`/save/${data.rows[0].id}`)
-    })
-      .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));       
-  }
+  console.log('||||||||||||||||foodArray|||||||||||||', foodArray);
+  // if(Object.keys(foodArray[0]).length > 3) {
+  // return client.query(SQL, foodArray)
+  // .then(data => {
+  //   console.log('||||||||||||||||save data|||||||||||||', data)
+  //   res.redirect(`/`);
+  //   })
+  //   .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
+  // }
+  //   else {
+  //     return client.query(`INSERT INTO exercise
+  //     (date, name, image_url, calories)
+  //     VALUES($1, $2, $3, $4)  RETURNING id`)
+  //     .then(data => {
+  //       console.log('||||||||||||||||save data|||||||||||||', data)
+  //       res.redirect(`/save/${data.rows[0].id}`)
+  //   })
+  //     .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));       
+  // }
 }
 
 app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
@@ -321,6 +323,7 @@ User.prototype.macronutrients = function() {
 }
 
 function Food(name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
+
   this.name = name;
   this.image_url = image_url;
   this.calories = calories;
