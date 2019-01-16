@@ -6,7 +6,15 @@
 </head>
 <body>
   <main>
-
+    <header>
+      <nav>
+        <ul>
+            <li><a href="/dash/<%= user_id %>"">Dashboard</a></li>
+            <li><a href="/add/<%= user_id %>/food">Add Food</a></li>
+            <li><a href="/add/<%= user_id %>/exercise">Add Exercise</a></li>
+        </ul>
+      </nav>
+    </header>
     <% if(search_type === 'food'){ %>
       <% data.forEach(food => { %>
         <div class="food-result">

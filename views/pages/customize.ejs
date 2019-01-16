@@ -6,6 +6,15 @@
 </head>
 <body>
   <main>
+      <header>
+          <nav>
+            <ul>
+                <li><a href="/dash/<%= user_id %>"">Dashboard</a></li>
+                <li><a href="/add/<%= user_id %>/food">Add Food</a></li>
+                <li><a href="/add/<%= user_id %>/exercise">Add Exercise</a></li>
+            </ul>
+          </nav>
+        </header>
     <% if(data.type === 'new_food'){ %>
       <!-- Blank Food Form -->
       <form action="/save" method="POST>
