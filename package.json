@@ -8,9 +8,11 @@
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "method-override": "^3.0.0",
     "nodemon": "^1.18.9",
     "pg": "^7.7.1",
+    "req-flash": "0.0.3",
     "superagent": "^4.1.0"
   },
   "devDependencies": {},

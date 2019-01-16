@@ -44,9 +44,13 @@
       </form>
 
     <% } else if(data.search_type === 'food'){ %>
-      <form action="/save" method="POST>
+     
+      <form action="/save/<%= data.id %>" method="POST>
+        <% for (var i in save){%>
+
         <img src=<%= data.image_url %> alt=<%= data.name %>>
-        
+        <input type="hidden" name="id" value=<%= data.id %>><br>
+         <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
         <label for="name">
           Name
           <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
@@ -65,7 +69,11 @@
         </label>
         <label for="carbs">
           Carbs
-          <input type="text" name="Carbs" placeholder="Carbs" value=<%= data.carbs %>><br>
+          <input type="text" name="carbs" placeholder="carbs" value=<%= data.carbs %>><br>
+        </label>
+        <label for="calories">
+          calories
+          <input type="text" name="calories" placeholder="calories" value=<%= data.calories %>><br>
         </label>
         <label for="serving_size">
           Serving Size
@@ -77,7 +85,8 @@
         </label>
         
         <input type="submit" value="Submit">
-  
+        <%} %>
+
       </form>
     <% } else if(data.search_type === 'exercise'){ %>
       <form action="/save" method="POST>
