@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <%- include('../partials/head.ejs') %>
-  <title>Customize Entry</title>
-</head>
+  <head>
+    <%- include('../partials/head.ejs') %>
+    <title>Customize Entry</title>
+  </head>
+  <img src=<%= data.image_url %> alt=<%= data.name %>>
 <body>
   <main>
       <header>
           <nav>
             <ul>
-                <li><a href="/dash/<%= user_id %>"">Dashboard</a></li>
-                <li><a href="/add/<%= user_id %>/food">Add Food</a></li>
-                <li><a href="/add/<%= user_id %>/exercise">Add Exercise</a></li>
+                <li><a href="/dash/<%= data.user_id %>"">Dashboard</a></li>
+                <li><a href="/add/<%= data.user_id %>/food">Add Food</a></li>
+                <li><a href="/add/<%= data.user_id %>/exercise">Add Exercise</a></li>
             </ul>
           </nav>
         </header>
@@ -54,11 +55,11 @@
 
     <% } else if(data.search_type === 'food'){ %>
      
-      <form action="/save/<%= data.id %>" method="POST>
+      <form action="/save" method="POST>
         <% for (var i in save){%>
-
-        <img src=<%= data.image_url %> alt=<%= data.name %>>
-        <input type="hidden" name="id" value=<%= data.id %>><br>
+          
+        <input type="hidden" name="id" value=<%= data.user_id %>><br>
+        <h1><%= save[i] %></h1>
          <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
         <label for="name">
           Name

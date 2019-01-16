@@ -254,25 +254,18 @@ app.post('/save', save)
 
 function save (req, res) {
 
-  console.log('||||||||||||||||req|||||||||||||', req)
-  res.redirect('/')
-  // let SQL = `INSERT INTO food_entry
-  //           (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit)
-  //           VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)  RETURNING id`
-  // let dateStr = new Date().toString();
-  // let foodArray = [dateStr, req.query.name, req.query.image_url, req.query.protein, req.query.fat, req.query.carbs, req.query.calories, req.query.serving_size, req.query.serving_unit];
-  // if(typeof parseInt(req.query.protein) != 'number' || typeof parseInt(req.query.fat) != 'number' || typeof parseInt(req.query.carbs) != 'number' || typeof parseInt(req.query.calories) != 'number' || typeof parseInt(req.query.serving_size) != 'number') {
-  //   res.send('INVALID INPUT');
-  //   return false;
-  // }
-  // else if(Object.keys(req.query).length > 3) {
-  // return client.query(SQL, foodArray)
-  // .then(data => {
-  //   let sql = `SELECT * FROM food_entry`;
-    
-  //   console.log('||||||||||||||||save data.rows|||||||||||||', data.rows)
-  //   res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id});
-  //   })
+
+  let SQL = `INSERT INTO food_entry
+            (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit)
+            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)  RETURNING id`
+  let dateStr = new Date().toString();
+  let foodArray = [dateStr, req.query.name, req.query.image_url, req.query.protein, req.query.fat, req.query.carbs, req.query.calories, req.query.serving_size, req.query.serving_unit];
+ 
+  return client.query(SQL, foodArray)
+  .then(data => {
+    console.log('|||||||||||||||||||||||||data||||||||||||||||||||', data)
+    res.redirect('/')
+    })
   //   .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
   // }
   //   else {
@@ -283,7 +276,7 @@ function save (req, res) {
   //       console.log('||||||||||||||||save data|||||||||||||', data)
   //       res.redirect(`/save/${data.rows[0].id}`)
   //   })
-  //     .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));       
+      .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));       
   //  }
 }
 
@@ -328,7 +321,9 @@ User.prototype.macronutrients = function() {
   return {"protein": protein, "fat": fat, "carbs": carbs};
 }
 
-function Food(name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
+function Food(id, name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
+  this.id = id;
+  console.log(id)
   this.name = name;
   this.image_url = image_url;
   this.calories = calories;
