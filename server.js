@@ -75,15 +75,17 @@ function renderRegister (req, res){
 
 function saveRegistration (req, res){
   let data = req.body;
-  let userHeight = (data.feet*12) + data.inches;
-  let newUser = new User(data.name, data.age, data.sex, data.weight, userHeight, data.activity_level);
+  let userHeight = (parseInt(data.feet) * 12) + parseInt(data.inches);
+  
+  let newUser = new User(data.name, data.age, data.sex, parseInt(data.weight), userHeight, data.activity_level);
 
   let sql = `INSERT INTO users 
               (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
               RETURNING id`;
   let values = [
-    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee().calories
+    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee()
   ];
+
   return client.query(sql, values)
     .then(result => {
       res.redirect(`/dash/${result.rows[0].id}`);
@@ -226,8 +228,8 @@ function exerciseSearch(url, id, query, res){
 
 function renderDash (req, res) {
   var dateStr = new Date().toDateString();
-  let id = req.params.id;
-  console.log(new Date().toDateString());
+  let id = parseInt(req.params.id);
+  
   let sql = `SELECT * FROM food_entry WHERE fk_users = '${id}' AND date = '${dateStr}'`;
   let foods = [];
   client.query(sql)
@@ -235,12 +237,17 @@ function renderDash (req, res) {
     foods = [...data.rows];
   });
 
-  console.log(foods);
+  let sql2 = `SELECT protein, fat, carbs, calories FROM users WHERE id = '${id}'`;
+  let targets;
+  client.query(sql2)
+    .then(targetResults => {
+      targets = targetResults.rows[0];
+    })
 
-  let sql2 = `SELECT * FROM exercise WHERE fk_users = '${id}' AND date = '${dateStr}'`;
-  return client.query(sql2)
+  let sql3 = `SELECT * FROM exercise WHERE fk_users = '${id}' AND date = '${dateStr}'`;
+  return client.query(sql3)
     .then(result => {
-      res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id});
+      res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id, macro_targets: targets});
     })
     .catch(err => {
       res.render('pages/error', {err});
@@ -312,7 +319,7 @@ function User(name, age, sex, weight, height, activity_level) {
   this.sex = sex;
   this.weight = parseFloat((weight / 2.2).toFixed(2));
   this.height = parseFloat((height * 2.54).toFixed(2));
-  this.activity_level = activity_level;
+  this.activity_level = parseFloat(activity_level);
 } 
 
 User.prototype.bmr = function() {
@@ -328,7 +335,7 @@ User.prototype.bmr = function() {
 }
 
 User.prototype.tdee = function() {
-  return parseInt(this.bmr() * this.activityMultiplier);
+  return parseInt(this.bmr() * this.activity_level);
 }
 
 User.prototype.macronutrients = function() {
