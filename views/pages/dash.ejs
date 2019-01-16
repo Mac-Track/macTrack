@@ -11,7 +11,8 @@
       </nav>
     </header>
   <div id="dashboard">
-  <h2><% date %></h2>
+  <h2><%= date %></h2>
+  
   <table>
     <% food_entry.forEach (food => { %>
       <tr>
@@ -25,10 +26,24 @@
         </div>
       </tr><br>
     </table> <%}) %>
-    <form>
-      <a href="../add/<%= user_id %>/food">ADD FOOD</a>
-      <a href="../add/<%= user_id %>/exercise">ADD EXERCISE</a>
-      <input type="submit" value="Edit" action="/dash" method="POST">
+    <% exercise_entry.forEach (exercise => { %>
+      <tr>
+        <div id="addDash">
+          <img src=<%= exercise.image_url %>>
+          <td> <%= exercise.name %> </td>
+          <td> 'Calories: '<%= exercise.calories %> </td>
+        </div>
+      </tr><br>
+    </table> <%}) %>
+
+    <form action="/add/<%= user_id %>/food">
+      <input type="hidden" name="user_id" value=<%= user_id %>>
+      <button type="submit">Add Food</button>
+    </form>
+
+    <form action="/add/<%= user_id %>/exercise">
+      <input type="hidden" name="user_id" value=<%= user_id %>>
+      <button type="submit">Add Exercise</button>
     </form>
     
     <% include chart.html %>

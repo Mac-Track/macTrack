@@ -218,17 +218,26 @@ function exerciseSearch(url, id, query, res){
 //===========================
 
 function renderDash (req, res) {
-  var dateStr = new Date().toString();
+  var dateStr = new Date().toDateString();
   let id = req.params.id;
-  let sql = `SELECT * FROM food_entry WHERE fk_users=$1`;
-  let values = [id];
-  return client.query(sql, values)
+  console.log(new Date().toDateString());
+  let sql = `SELECT * FROM food_entry WHERE fk_users = '${id}' AND date = '${dateStr}'`;
+  let foods = [];
+  client.query(sql)
   .then(data => {
-    res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id});
-  })
-  .catch(err => {
-    res.render('pages/error', {err});
+    foods = [...data.rows];
   });
+
+  console.log(foods);
+
+  let sql2 = `SELECT * FROM exercise WHERE fk_users = '${id}' AND date = '${dateStr}'`;
+  return client.query(sql2)
+    .then(result => {
+      res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id});
+    })
+    .catch(err => {
+      res.render('pages/error', {err});
+    });
 }
 
 //===========================
@@ -253,39 +262,36 @@ app.post('/save', save)
 
 
 function save (req, res) {
+  let dateStr = new Date().toDateString();
+  
+  if(req.body.type === 'food'){
+    let SQL = `INSERT INTO food_entry
+              (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit, fk_users)
+              VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
+  
+    let foodArray = [dateStr, req.body.name, req.body.image_url, parseFloat(req.body.protein), parseFloat(req.body.fat), parseFloat(req.body.carbs), parseFloat(req.body.calories), parseFloat(req.body.serving_size), req.body.serving_unit, req.body.user_id];
+  
+    return client.query(SQL, foodArray)
+      .then(result => {
+        res.redirect(`/dash/${req.body.user_id}`);
+      })
+      .catch(err => console.log(err));
 
-  console.log('||||||||||||||||req|||||||||||||', req)
-  res.redirect('/')
-  // let SQL = `INSERT INTO food_entry
-  //           (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit)
-  //           VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)  RETURNING id`
-  // let dateStr = new Date().toString();
-  // let foodArray = [dateStr, req.query.name, req.query.image_url, req.query.protein, req.query.fat, req.query.carbs, req.query.calories, req.query.serving_size, req.query.serving_unit];
-  // if(typeof parseInt(req.query.protein) != 'number' || typeof parseInt(req.query.fat) != 'number' || typeof parseInt(req.query.carbs) != 'number' || typeof parseInt(req.query.calories) != 'number' || typeof parseInt(req.query.serving_size) != 'number') {
-  //   res.send('INVALID INPUT');
-  //   return false;
-  // }
-  // else if(Object.keys(req.query).length > 3) {
-  // return client.query(SQL, foodArray)
-  // .then(data => {
-  //   let sql = `SELECT * FROM food_entry`;
-    
-  //   console.log('||||||||||||||||save data.rows|||||||||||||', data.rows)
-  //   res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id});
-  //   })
-  //   .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
-  // }
-  //   else {
-  //     return client.query(`INSERT INTO exercise
-  //     (date, name, image_url, calories)
-  //     VALUES($1, $2, $3, $4)  RETURNING id`, [dateStr, req.query.name, req.query.image_url, req.query.calories])
-  //     .then(data => {
-  //       console.log('||||||||||||||||save data|||||||||||||', data)
-  //       res.redirect(`/save/${data.rows[0].id}`)
-  //   })
-  //     .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));       
-  //  }
+  } else if(req.body.type === 'exercise'){
+    let SQL =  `INSERT INTO exercise
+                (date, name, image_url, calories, fk_users)
+                VALUES($1, $2, $3, $4, $5)`;
+
+    let values = [dateStr, req.body.name, req.body.image_url, req.body.calories, req.body.user_id]
+
+    return client.query(SQL, values)
+      .then(result => {
+        res.redirect(`dash/${req.body.user_id}`);
+      })
+      .catch(err => console.log(err));
+  }      
 }
+
 
 app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 
