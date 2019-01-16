@@ -117,6 +117,13 @@ function renderAdd(req, res){
     .catch(err => console.log('||||||||||||||||||||||||renderAdd error|||||||||||||||||||||||', err));
 }
 
+////////////Disclaimer////////
+app.get('/disclaimer',renderDisclaimer);
+
+function renderDisclaimer(req, res){
+  res.render('pages/disclaimer.ejs');
+}
+
 //===========================
 // Search
 //===========================
