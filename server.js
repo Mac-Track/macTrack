@@ -75,15 +75,17 @@ function renderRegister (req, res){
 
 function saveRegistration (req, res){
   let data = req.body;
-  let userHeight = (data.feet*12) + data.inches;
-  let newUser = new User(data.name, data.age, data.sex, data.weight, userHeight, data.activity_level);
+  let userHeight = (parseInt(data.feet) * 12) + parseInt(data.inches);
+  
+  let newUser = new User(data.name, data.age, data.sex, parseInt(data.weight), userHeight, data.activity_level);
 
   let sql = `INSERT INTO users 
               (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
               RETURNING id`;
   let values = [
-    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee().calories
+    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee()
   ];
+
   return client.query(sql, values)
     .then(result => {
       res.redirect(`/dash/${result.rows[0].id}`);
@@ -115,6 +117,13 @@ function renderAdd(req, res){
       res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
     })
     .catch(err => console.log('||||||||||||||||||||||||renderAdd error|||||||||||||||||||||||', err));
+}
+
+////////////Disclaimer////////
+app.get('/disclaimer',renderDisclaimer);
+
+function renderDisclaimer(req, res){
+  res.render('pages/disclaimer.ejs');
 }
 
 //===========================
@@ -218,17 +227,31 @@ function exerciseSearch(url, id, query, res){
 //===========================
 
 function renderDash (req, res) {
-  var dateStr = new Date().toString();
-  let id = req.params.id;
-  let sql = `SELECT * FROM food_entry WHERE fk_users=$1`;
-  let values = [id];
-  return client.query(sql, values)
+  var dateStr = new Date().toDateString();
+  let id = parseInt(req.params.id);
+  
+  let sql = `SELECT * FROM food_entry WHERE fk_users = '${id}' AND date = '${dateStr}'`;
+  let foods = [];
+  client.query(sql)
   .then(data => {
-    res.render('pages/dash', {food_entry: data.rows, date: dateStr, user_id: id});
-  })
-  .catch(err => {
-    res.render('pages/error', {err});
+    foods = [...data.rows];
   });
+
+  let sql2 = `SELECT protein, fat, carbs, calories FROM users WHERE id = '${id}'`;
+  let targets;
+  client.query(sql2)
+    .then(targetResults => {
+      targets = targetResults.rows[0];
+    })
+
+  let sql3 = `SELECT * FROM exercise WHERE fk_users = '${id}' AND date = '${dateStr}'`;
+  return client.query(sql3)
+    .then(result => {
+      res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id, macro_targets: targets});
+    })
+    .catch(err => {
+      res.render('pages/error', {err});
+    });
 }
 
 //===========================
@@ -253,32 +276,36 @@ app.post('/save', save)
 
 
 function save (req, res) {
+  let dateStr = new Date().toDateString();
+  
+  if(req.body.type === 'food'){
+    let SQL = `INSERT INTO food_entry
+              (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit, fk_users)
+              VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`;
+  
+    let foodArray = [dateStr, req.body.name, req.body.image_url, parseFloat(req.body.protein), parseFloat(req.body.fat), parseFloat(req.body.carbs), parseFloat(req.body.calories), parseFloat(req.body.serving_size), req.body.serving_unit, req.body.user_id];
+  
+    return client.query(SQL, foodArray)
+      .then(result => {
+        res.redirect(`/dash/${req.body.user_id}`);
+      })
+      .catch(err => console.log(err));
 
+  } else if(req.body.type === 'exercise'){
+    let SQL =  `INSERT INTO exercise
+                (date, name, image_url, calories, fk_users)
+                VALUES($1, $2, $3, $4, $5)`;
 
-  let SQL = `INSERT INTO food_entry
-            (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit)
-            VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)  RETURNING id`
-  let dateStr = new Date().toString();
-  let foodArray = [dateStr, req.query.name, req.query.image_url, req.query.protein, req.query.fat, req.query.carbs, req.query.calories, req.query.serving_size, req.query.serving_unit];
- 
-  return client.query(SQL, foodArray)
-  .then(data => {
-    console.log('|||||||||||||||||||||||||data||||||||||||||||||||', data)
-    res.redirect('/')
-    })
-  //   .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));
-  // }
-  //   else {
-  //     return client.query(`INSERT INTO exercise
-  //     (date, name, image_url, calories)
-  //     VALUES($1, $2, $3, $4)  RETURNING id`, [dateStr, req.query.name, req.query.image_url, req.query.calories])
-  //     .then(data => {
-  //       console.log('||||||||||||||||save data|||||||||||||', data)
-  //       res.redirect(`/save/${data.rows[0].id}`)
-  //   })
-      .catch(err => console.error('|||||||||||||||||||save error||||||||||||||||||||', err));       
-  //  }
+    let values = [dateStr, req.body.name, req.body.image_url, req.body.calories, req.body.user_id]
+
+    return client.query(SQL, values)
+      .then(result => {
+        res.redirect(`dash/${req.body.user_id}`);
+      })
+      .catch(err => console.log(err));
+  }      
 }
+
 
 app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 
@@ -292,7 +319,7 @@ function User(name, age, sex, weight, height, activity_level) {
   this.sex = sex;
   this.weight = parseFloat((weight / 2.2).toFixed(2));
   this.height = parseFloat((height * 2.54).toFixed(2));
-  this.activity_level = activity_level;
+  this.activity_level = parseFloat(activity_level);
 } 
 
 User.prototype.bmr = function() {
@@ -308,7 +335,7 @@ User.prototype.bmr = function() {
 }
 
 User.prototype.tdee = function() {
-  return parseInt(this.bmr() * this.activityMultiplier);
+  return parseInt(this.bmr() * this.activity_level);
 }
 
 User.prototype.macronutrients = function() {

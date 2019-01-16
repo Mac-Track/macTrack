@@ -18,8 +18,11 @@
         </header>
     <% if(data.type === 'new_food'){ %>
       <!-- Blank Food Form -->
-      <form action="/save" method="POST>
-      
+      <form action="/save" method="POST">
+        
+        <input type="hidden" name="user_id" value=<%= data.user_id %>>
+        <input type="hidden" name="type" value="food">
+        
         <label for="name">
           Name
           <input type="text" name="name" placeholder="Name"><br>
@@ -53,14 +56,15 @@
   
       </form>
 
-    <% } else if(data.search_type === 'food'){ %>
+    <% } else if(data.type === 'food'){ %>
      
-      <form action="/save" method="POST>
-        <% for (var i in save){%>
-          
-        <input type="hidden" name="id" value=<%= data.user_id %>><br>
-        <h1><%= save[i] %></h1>
-         <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
+      <form action="/save" method="POST">
+
+        <input type="hidden" name="user_id" value=<%= data.user_id %>>
+        <input type="hidden" name="type" value="food">
+        
+        <img src=<%= data.image_url %> alt=<%= data.name %>>
+        <br>
         <label for="name">
           Name
           <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
@@ -94,12 +98,14 @@
           <input type="text" name="serving_unit" placeholder="Serving Unit" value=<%= data.serving_unit %>><br>
         </label>
         
-        <input type="submit" value="Submit">
-        <%} %>
+        <button type="submit">Submit</button>
 
       </form>
-    <% } else if(data.search_type === 'exercise'){ %>
-      <form action="/save" method="POST>
+    <% } else if(data.type === 'exercise'){ %>
+      <form action="/save" method="POST">
+        <input type="hidden" name="user_id" value=<%= data.user_id %>>
+        <input type="hidden" name="type" value="exercise">
+
         <img src=<%= data.image_url %> alt=<%= data.name %>>
         
         <label for="name">
@@ -116,9 +122,12 @@
         </label>
         
         <input type="submit" value="Submit">
-    <% } else if(data.search_type === 'new_exercise'){ %>
-      <form action="/save" method="POST>
+    <% } else if(data.type === 'new_exercise'){ %>
+      <form action="/save" method="POST">
         
+        <input type="hidden" name="user_id" value=<%= data.user_id %>>
+        <input type="hidden" name="type" value="exercise">
+
         <label for="name">
           Name
           <input type="text" name="name" placeholder="Name"><br>
