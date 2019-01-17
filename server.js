@@ -276,12 +276,12 @@ function custom(req, res) {
 // Save Function
 //===========================
 
-app.get('/save', save)
+// app.get('/save', save)
 app.post('/save', save)
 
 function save (req, res) {
   let dateStr = new Date().toDateString();
-  
+
   if(req.body.type === 'food'){
     let SQL = `INSERT INTO food_entry
               (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit, fk_users)
@@ -322,6 +322,7 @@ function deleteEntry(req, res){
     .then(result => {
       res.redirect(`/dash/${req.params.user_id}`);
     })
+    .catch(err => console.log(err));
 }
 
 //===========================

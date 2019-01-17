@@ -39,30 +39,50 @@
         <button type="submit">Create Custom Entry</button>
     </form>
 
-    <form action="">
-        <div class="form">
-        <div class="checkbox-container">
-        <br>
-        <label for="history">History:</label>
-        <br>
-        <br>
+    <h1>History:</h1>
         <section>
-            <% entries.forEach(entry => { %>
-                <div>
-                    <img src=<%= entry.image_url %>>
-                    <h2> <%= entry.name %></h2>
-                    <p>calories <%= entry.calories %></p>
-                    <p>protein <%= entry.protein %></p>
-                    <p>fat <%= entry.fat %></p>
-                    <p>carbs <%= entry.carbs %></p>
-                </div>
-        <% }) %>
+            <% if(search_type === 'food') { %>
+                <% entries.forEach(entry => { %>
+                    <div>
+                        <img src=<%= entry.image_url %>>
+                        <h2><%= entry.name %></h2>
+                        <p>Calories: <%= entry.calories %></p>
+                        <p>Protein: <%= entry.protein %></p>
+                        <p>Fat: <%= entry.fat %></p>
+                        <p>Carbs: <%= entry.carbs %></p>
+                        <form action="/save" method="POST">
+                            <input type="hidden" name="name" value=<%= entry.name %>>
+                            <input type="hidden" name="calories" value=<%= entry.calories %>>
+                            <input type="hidden" name="protein" value=<%= entry.protein %>>
+                            <input type="hidden" name="fat" value=<%= entry.fat %>>
+                            <input type="hidden" name="carbs" value=<%= entry.carbs %>>
+                            <input type="hidden" name="image_url" value=<%= entry.image_url %>>
+                            <input type="hidden" name="serving_size" value=<%= entry.serving_size %>>
+                            <input type="hidden" name="serving_unit" value=<%= entry.serving_unit %>>
+                            <input type="hidden" name="user_id" value=<%= user_id %>>
+                            <input type="hidden" name="type" value="food">
+                            <button type="submit">Add <%= entry.name %> From History</button>
+                        </form>
+                    </div>
+                <% }) %>
+            <% } else if(search_type === 'exercise') {%>
+                <% entries.forEach(entry => { %>
+                    <div>
+                        <img src=<%= entry.image_url %>>
+                        <h2><%= entry.name %></h2>
+                        <p>Calories Burned: <%= entry.calories %></p>
+                        <form action="/save" method="POST">
+                            <input type="hidden" name="name" value=<%= entry.name %>>
+                            <input type="hidden" name="calories" value=<%= entry.calories %>>
+                            <input type="hidden" name="image_url" value=<%= entry.image_url %>>
+                            <input type="hidden" name="user_id" value=<%= user_id %>>
+                            <input type="hidden" name="type" value="exercise">
+                            <button type="submit">Add <%= entry.name %> From History</button>
+                        </form>
+                    </div>
+                <% }) %>
+            <% } %>
         </section>
-        <br>
-        <input type="submit" value="Submit">
 
-        </div>
-        </div>
-    </form>
 </body>
 </html>
