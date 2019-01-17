@@ -272,7 +272,6 @@ function custom(req, res) {
   res.render('pages/customize.ejs', {data: selectionData});
 }
 
-
 //===========================
 // Save Function
 //===========================
@@ -315,10 +314,14 @@ function save (req, res) {
 // Delete Function
 //===========================
 
-app.delete('/delete', deleteEntry);
+app.delete('/delete/:user_id/:entry_id/:table', deleteEntry);
 
 function deleteEntry(req, res){
-
+  let SQL = `DELETE from ${req.params.table} WHERE id = '${req.params.entry_id}'`;
+  client.query(SQL)
+    .then(result => {
+      res.redirect(`/dash/${req.params.user_id}`);
+    })
 }
 
 //===========================

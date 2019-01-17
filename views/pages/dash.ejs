@@ -16,34 +16,32 @@
     <div id="dashboard">
       <h2><%= date %></h2>
   
-      <table>
         <% food_entry.forEach (food => { %>
-          <tr>
-            <div id="addDash">
-              <img src=<%= food.image_url %>>
-              <td> <%= food.name %> </td>
-              <td> 'Protein: '<%= food.protein %> </td>
-              <td> 'Fat: '<%= food.fat %> </td>
-              <td> 'Carbs: '<%= food.carbs %> </td>
-              <td> 'Calories: '<%= food.calories %> </td>
-              <form action="/delete/<%= food.id %>" method="POST">
-                <input type="hidden" name="_method" value="DELETE">
-                <button type="submit" class="delete">Delete Entry</button>
-              </form>
-            </div>
-          </tr>
-          <%}) %>
-      </table> 
+          <div id="addDash">
+            <img src=<%= food.image_url %>>
+            <h2> <%= food.name %> </h2>
+            <p> Protein: <%= food.protein %> </p>
+            <p> Fat: <%= food.fat %> </p>
+            <p> Carbs: <%= food.carbs %> </p>
+            <p> Calories: <%= food.calories %> </p>
+            <form action="/delete/<%= user_id %>/<%= food.id %>/food_entry" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" class="delete">Delete Entry</button>
+            </form>
+          </div>
+        <%}) %>
     
       <% exercise_entry.forEach (exercise => { %>
-        <tr>
-          <div id="addDash">
-            <img src=<%= exercise.image_url %>>
-            <td> <%= exercise.name %> </td>
-            <td> 'Calories: '<%= exercise.calories %> </td>
-          </div>
-        </tr><br>
-      <%}) %>
+        <div id="addDash">
+          <img src=<%= exercise.image_url %>>
+          <h2> <%= exercise.name %> </h2>
+          <p> Calories Burned: <%= exercise.calories %> </p>
+          <form action="/delete/<%= user_id %>/<%= exercise.id %>/exercise" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="delete">Delete Entry</button>
+          </form>
+        </div>
+      <% }) %>
     
     <form action="/add/<%= user_id %>/food">
       <input type="hidden" name="user_id" value=<%= user_id %>>
