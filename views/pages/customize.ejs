@@ -56,8 +56,8 @@
   
       </form>
 
-    <% } else if(data.type === 'food'){ %>
-     
+      <% } else if(data.type === 'food'){ %>
+    
       <form action="/save" method="POST">
 
         <input type="hidden" name="user_id" value=<%= data.user_id %>>
@@ -143,6 +143,16 @@
         
         <input type="submit" value="Submit">
     <% } %>
+    
+    <div id="messages">
+      <% Object.keys(messages).forEach(function (type) { %>
+        <ul class="<%= type %>">
+        <% messages[type].forEach(function (message) { %>
+          <li><%= message %></li>
+        <% }) %>
+        </ul>
+      <% }) %>
+      </div>
   </main>
 </body>
 </html>
