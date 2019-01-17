@@ -2,12 +2,12 @@
     width: 50%;
     height: 50%;
   padding: 1px;
+  background-color: blue;
 }
 
 #chartSize {
     width: 50%;
     float: right;
-    background-color: brown;
 }
 
 
