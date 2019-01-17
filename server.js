@@ -25,6 +25,13 @@ require('dotenv').config();
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride((req, res) => {
+  if(req.body && typeof req.body === 'object' && '_method' in req.body){
+    let method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+}));
 
 //===========================
 // EJS
@@ -266,14 +273,12 @@ function custom(req, res) {
 }
 
 
-// app.post('/history', history);
-app.get('/save', save)
-app.post('/save', save)
-
 //===========================
 // Save Function
 //===========================
 
+app.get('/save', save)
+app.post('/save', save)
 
 function save (req, res) {
   let dateStr = new Date().toDateString();
@@ -306,6 +311,19 @@ function save (req, res) {
   }      
 }
 
+//===========================
+// Delete Function
+//===========================
+
+app.delete('/delete', deleteEntry);
+
+function deleteEntry(req, res){
+
+}
+
+//===========================
+// Listener
+//===========================
 
 app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 

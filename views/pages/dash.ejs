@@ -1,57 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../partials/head.ejs') %>
-    <title>Mac-Track Dashboard</title>
-  </head>
-  <body>
-    <header>
-      <nav>
-        
-      </nav>
-    </header>
-  <div id="dashboard">
-  <h2><%= date %></h2>
+
+<head>
+  <%- include('../partials/head.ejs') %>
+  <title>Mac-Track Dashboard</title>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+    </nav>
+  </header>
+
+    <div id="dashboard">
+      <h2><%= date %></h2>
   
-  <table>
-    <% food_entry.forEach (food => { %>
-      <tr>
-        <div id="addDash">
-          <img src=<%= food.image_url %>>
-          <td> <%= food.name %> </td>
-          <td> 'Protein: '<%= food.protein %> </td>
-          <td> 'Fat: '<%= food.fat %> </td>
-          <td> 'Carbs: '<%= food.carbs %> </td>
-          <td> 'Calories: '<%= food.calories %> </td>
-        </div>
-      </tr><br>
-    </table> <%}) %>
-
-    <form>
-      <button><a href="../add/<%= user_id %>/food">ADD FOOD</a></button>
-      <button><a href="../add/<%= user_id %>/exercise">ADD EXERCISE</a></button>
-      <input type="submit" value="Edit" action="/dash" method="POST">
-
-    <% exercise_entry.forEach (exercise => { %>
-      <tr>
-        <div id="addDash">
-          <img src=<%= exercise.image_url %>>
-          <td> <%= exercise.name %> </td>
-          <td> 'Calories: '<%= exercise.calories %> </td>
-        </div>
-      </tr><br>
-    </table> <%}) %>
-
+      <table>
+        <% food_entry.forEach (food => { %>
+          <tr>
+            <div id="addDash">
+              <img src=<%= food.image_url %>>
+              <td> <%= food.name %> </td>
+              <td> 'Protein: '<%= food.protein %> </td>
+              <td> 'Fat: '<%= food.fat %> </td>
+              <td> 'Carbs: '<%= food.carbs %> </td>
+              <td> 'Calories: '<%= food.calories %> </td>
+              <form action="/delete/<%= food.id %>" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="delete">Delete Entry</button>
+              </form>
+            </div>
+          </tr>
+          <%}) %>
+      </table> 
+    
+      <% exercise_entry.forEach (exercise => { %>
+        <tr>
+          <div id="addDash">
+            <img src=<%= exercise.image_url %>>
+            <td> <%= exercise.name %> </td>
+            <td> 'Calories: '<%= exercise.calories %> </td>
+          </div>
+        </tr><br>
+      <%}) %>
+    
     <form action="/add/<%= user_id %>/food">
       <input type="hidden" name="user_id" value=<%= user_id %>>
       <button type="submit">Add Food</button>
     </form>
-
+    
     <form action="/add/<%= user_id %>/exercise">
       <input type="hidden" name="user_id" value=<%= user_id %>>
       <button type="submit">Add Exercise</button>
-
     </form>
+
+    <button class="edit">Edit</button>
     
     <% include chart.html %>
   
@@ -128,9 +132,20 @@
             }
         });
 
- </script>
- </div>
-</div>
+      </script>
+    </div>
+
+  </div>
 </body>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+  $('.delete').hide();
+
+  $('.edit').on('click', function() {
+    $('.delete').toggle();
+  });
+</script>
+
 </html>
