@@ -76,7 +76,7 @@ INSERT INTO food_entry (
   serving_unit
 ) VALUES (
   1,
-  'Jan 12,2019',
+  'Tue Jan 15 2019',
   'Banana',
   'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FtqnQdN4rDWU%2Fhqdefault.jpg',
   1.3,
@@ -100,7 +100,7 @@ INSERT INTO food_entry (
   serving_unit
 ) VALUES (
   1,
-  'Jan 12,2019',
+  'Tue Jan 15 2019',
   'Appletini',
   'https://proxy.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.bunkycooks.com%2Fwp-content%2Fuploads%2F2010%2F11%2FGreen-Appletini-close-up-2.jpg&f=1',
   0,

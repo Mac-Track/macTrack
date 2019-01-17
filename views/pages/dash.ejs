@@ -11,7 +11,8 @@
       </nav>
     </header>
   <div id="dashboard">
-  <h2><% date %></h2>
+  <h2><%= date %></h2>
+  
   <table>
     <% food_entry.forEach (food => { %>
       <tr>
@@ -25,62 +26,107 @@
         </div>
       </tr><br>
     </table> <%}) %>
+
     <form>
       <button><a href="../add/<%= user_id %>/food">ADD FOOD</a></button>
       <button><a href="../add/<%= user_id %>/exercise">ADD EXERCISE</a></button>
       <input type="submit" value="Edit" action="/dash" method="POST">
+
+    <% exercise_entry.forEach (exercise => { %>
+      <tr>
+        <div id="addDash">
+          <img src=<%= exercise.image_url %>>
+          <td> <%= exercise.name %> </td>
+          <td> 'Calories: '<%= exercise.calories %> </td>
+        </div>
+      </tr><br>
+    </table> <%}) %>
+
+    <form action="/add/<%= user_id %>/food">
+      <input type="hidden" name="user_id" value=<%= user_id %>>
+      <button type="submit">Add Food</button>
+    </form>
+
+    <form action="/add/<%= user_id %>/exercise">
+      <input type="hidden" name="user_id" value=<%= user_id %>>
+      <button type="submit">Add Exercise</button>
+
     </form>
     
     <% include chart.html %>
-    
+  
     <div id="chartSize">
       <canvas id="myChart"></canvas>
       
       <script>
-        
+        // Targets Math
+        <% var proteinPercent = 0; %>
+        <% var fatPercent = 0; %>
+        <% var carbPercent = 0; %>
+        <% var caloriePercent = 0; %>
+        <% food_entry.forEach (food => { %>
+          <% proteinPercent += parseInt(food.protein); %>
+          <% fatPercent += parseInt(food.fat); %>
+          <% carbPercent += parseInt(food.carbs); %>
+          <% caloriePercent += parseInt(food.calories); %>
+        <% }) %>
+
+        <% proteinPercent = Math.round((proteinPercent / macro_targets.protein) * 100); %>
+        <% fatPercent = Math.round((fatPercent / macro_targets.fat) * 100); %>
+        <% carbPercent = Math.round((carbPercent / macro_targets.carbs) * 100); %>
+        <% caloriePercent = Math.round((caloriePercent / macro_targets.calories) * 100); %>
+
+        <% let maxY = 100; %>
+        <% if(proteinPercent > maxY) maxY = proteinPercent; %>
+        <% if(fatPercent > maxY) maxY = fatPercent; %>
+        <% if(carbPercent > maxY) maxY = carbPercent; %>
+        <% if(caloriePercent > maxY) maxY = caloriePercent; %>
+
+        // Chart Set Up
         var ctx = document.getElementById("myChart").getContext('2d');
+        Chart.scaleService.updateScaleDefaults('linear', {
+          ticks: {
+            min: 0,
+            max: <%= maxY %>
+          }
+        });
         
+
         var myChart = new Chart(ctx, {
           type: 'bar',
           data: {
             labels: ["Protein", "Fat", "Carbs", "Calories"],
             datasets: [{
               label: 'Nutrition',
-              <% var tempPro = 0; %>
-              <% var tempFat = 0; %>
-              <% var tempCarb = 0; %>
-              <% var tempCal = 0; %>
-              <% food_entry.forEach (food => { %>
-            data: ["<%= tempPro+= parseInt(food.protein) %>", "<%= tempFat+= parseInt(food.fat) %>", "<%= tempCarb+= parseInt(food.carbs) %>", "<%= tempCal+= parseInt(food.calories) %>"],
-            <%}) %>
-            backgroundColor: [
+              data: ["<%= proteinPercent %>", "<%= fatPercent %>", "<%= carbPercent %>", "<%= caloriePercent %>"],
+              backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-            ],
-            borderColor: [
+              ],
+              borderColor: [
                 'rgba(255,99,132,1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-          xAxes: [{
-                stacked: true
-              }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
+              ],
+              borderWidth: 1
+              }]
+            },
+            options: {
+                scales: {
+                  xAxes: [{
+                        stacked: true
+                      }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
                 }
-            }]
-        }
-    }
-});
+            }
+        });
 
  </script>
  </div>
