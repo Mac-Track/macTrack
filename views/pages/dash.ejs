@@ -26,6 +26,12 @@
         </div>
       </tr><br>
     </table> <%}) %>
+
+    <form>
+      <button><a href="../add/<%= user_id %>/food">ADD FOOD</a></button>
+      <button><a href="../add/<%= user_id %>/exercise">ADD EXERCISE</a></button>
+      <input type="submit" value="Edit" action="/dash" method="POST">
+
     <% exercise_entry.forEach (exercise => { %>
       <tr>
         <div id="addDash">
@@ -44,6 +50,7 @@
     <form action="/add/<%= user_id %>/exercise">
       <input type="hidden" name="user_id" value=<%= user_id %>>
       <button type="submit">Add Exercise</button>
+
     </form>
    
     <% include chart.html %>
