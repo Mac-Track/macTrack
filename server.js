@@ -267,6 +267,7 @@ function renderDash (req, res) {
   return client.query(sql3)
     .then(result => {
       res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id, macro_targets: targets});
+      const newTargets = targets;
     })
     .catch(err => {
       res.render('pages/error', {err});

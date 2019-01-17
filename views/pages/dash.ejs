@@ -3,7 +3,6 @@
   <head>
     <%- include('../partials/head.ejs') %>
     <title>Mac-Track Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="css/modules.css">
   </head>
   <body>
     <header>
@@ -11,21 +10,20 @@
         
       </nav>
     </header>
-  <div id="dashboard">
+  <div id="dash-page">
+    <div id="dash-table">
   <h2><%= date %></h2>
   
+  <% food_entry.forEach (food => { %>
   <table>
-    <% food_entry.forEach (food => { %>
-      <tr>
-        <div id="addDash">
-          <img src=<%= food.image_url %>>
-          <td> <%= food.name %> </td>
+    <img src=<%= food.image_url %>><br>
+    <tr>
+      <td> <%= food.name %> </td>
           <td> 'Protein: '<%= food.protein %> </td>
           <td> 'Fat: '<%= food.fat %> </td>
           <td> 'Carbs: '<%= food.carbs %> </td>
           <td> 'Calories: '<%= food.calories %> </td>
-        </div>
-      </tr><br>
+      </tr>
     </table> <%}) %>
 
     <form>
@@ -35,11 +33,9 @@
 
     <% exercise_entry.forEach (exercise => { %>
       <tr>
-        <div id="addDash">
           <img src=<%= exercise.image_url %>>
           <td> <%= exercise.name %> </td>
           <td> 'Calories: '<%= exercise.calories %> </td>
-        </div>
       </tr><br>
     </table> <%}) %>
 
@@ -53,10 +49,10 @@
       <button type="submit">Add Exercise</button>
 
     </form>
-   
+  </div> 
     <% include chart.html %>
   
-    <div id="chartSize">
+    <div id="chartSize" style="width: 40%; height:40%">
       <canvas id="myChart"></canvas>
       
       <script>
@@ -128,6 +124,7 @@
                 }
             }
         });
+       
 
  </script>
  </div>
