@@ -1,12 +1,37 @@
 @media (min-width: 768px){
-html { 
-background-color: #E9D5C3;
-color: #BA5345;
-font-size: 16pt;
-font-weight: bold;
+.homepage { 
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+  url(../images/stretch.jpg);
+  /* margin: 0 auto 100px; */
+  background: cover;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 2em; 
+  color: white;
+  padding-top: 50px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  /* position: relative; */
+  /* z-index: 1; */
 }
-
-body {
-  
+.home {
+  margin: auto;
+  text-align: center;
+  /* width: 300px; */
+}
+.p {
+float: left;
+width: 600px;
+}
+.footer {
+font-size: 14px;
+display: flex;
+align-content: flex-end center;
+}
+.links {
+  font-size: 14px;
 }
 }
