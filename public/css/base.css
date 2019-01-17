@@ -1,13 +1,12 @@
-
+@media (min-width: 768px){
 html { 
-  background-image: url('../images/stretch.jpg'); 
-  background-size: cover;
-  margin: 0;
-  font-size: 2em;
-  text-align: center;
-  color: white;
-  padding-top: 50px;
-  position: relative;
-  z-index: 1;
+background-color: #E9D5C3;
+color: #BA5345;
+font-size: 16pt;
+font-weight: bold;
 }
 
+body {
+  
+}
+}
