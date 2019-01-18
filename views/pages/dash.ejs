@@ -52,13 +52,15 @@
     </form>
 
     <button class="edit">Edit</button>
-    
+
     <% include chart.html %>
   
-    <div id="chartSize">
+    <div id="chartSize" style="width: 40%; height:40%">
+
       <canvas id="myChart"></canvas>
       
       <script>
+
         // Targets Math
         <% var proteinPercent = 0; %>
         <% var fatPercent = 0; %>
@@ -89,55 +91,54 @@
         <% if(caloriePercent > maxY) maxY = caloriePercent; %>
 
         // Chart Set Up
-        var ctx = document.getElementById("myChart").getContext('2d');
-        Chart.scaleService.updateScaleDefaults('linear', {
-          ticks: {
-            min: 0,
-            max: <%= maxY %>
-          }
-        });
-        
 
+        var ctx = document.getElementById("myChart").getContext('2d');
+        
         var myChart = new Chart(ctx, {
           type: 'bar',
           data: {
             labels: ["Protein", "Fat", "Carbs", "Calories"],
             datasets: [{
               label: 'Nutrition',
-              data: ["<%= proteinPercent %>", "<%= fatPercent %>", "<%= carbPercent %>", "<%= caloriePercent %>"],
-              backgroundColor: [
+              <% var tempPro = 0; %>
+              <% var tempFat = 0; %>
+              <% var tempCarb = 0; %>
+              <% var tempCal = 0; %>
+              <% food_entry.forEach (food => { %>
+            data: ["<%= tempPro+= parseInt(food.protein) %>", "<%= tempFat+= parseInt(food.fat) %>", "<%= tempCarb+= parseInt(food.carbs) %>", "<%= tempCal+= parseInt(food.calories) %>"],
+            <%}) %>
+            backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-              ],
-              borderColor: [
+            ],
+            borderColor: [
                 'rgba(255,99,132,1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
-              ],
-              borderWidth: 1
-              }]
-            },
-            options: {
-                scales: {
-                  xAxes: [{
-                        stacked: true
-                      }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+          xAxes: [{
+                stacked: true
+              }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
                 }
-            }
-        });
+            }]
+        }
+    }
+});
 
-      </script>
-    </div>
-
-  </div>
+ </script>
+ </div>
+</div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
