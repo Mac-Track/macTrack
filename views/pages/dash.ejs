@@ -64,17 +64,23 @@
         <% var fatPercent = 0; %>
         <% var carbPercent = 0; %>
         <% var caloriePercent = 0; %>
+        <% var caloriesBurned = 0; %>
+
         <% food_entry.forEach (food => { %>
           <% proteinPercent += parseInt(food.protein); %>
           <% fatPercent += parseInt(food.fat); %>
           <% carbPercent += parseInt(food.carbs); %>
           <% caloriePercent += parseInt(food.calories); %>
-        <% }) %>
+        <% }); %>
+
+        <% exercise_entry.forEach(exercise => { %>
+          <% caloriesBurned += exercise.calories; %>
+        <% }); %>
 
         <% proteinPercent = Math.round((proteinPercent / macro_targets.protein) * 100); %>
         <% fatPercent = Math.round((fatPercent / macro_targets.fat) * 100); %>
         <% carbPercent = Math.round((carbPercent / macro_targets.carbs) * 100); %>
-        <% caloriePercent = Math.round((caloriePercent / macro_targets.calories) * 100); %>
+        <% caloriePercent = Math.round(((caloriePercent - caloriesBurned) / macro_targets.calories) * 100); %>
 
         <% let maxY = 100; %>
         <% if(proteinPercent > maxY) maxY = proteinPercent; %>
