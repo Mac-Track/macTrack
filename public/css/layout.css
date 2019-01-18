@@ -1,3 +1,7 @@
+.results-page {
+  background-color: rgb(99, 99, 100);
+}
+
 .all-results{
   display: flex;
   flex-direction: row;
@@ -19,6 +23,8 @@
 .food-result h2 {
   margin-top: 10px;
   font-size: 45px;
+  color: rgb(232, 65, 16);
+  text-shadow: 1px 2px 2px rgb(99, 99, 100);
 }
 
 .food-result img {
@@ -31,4 +37,20 @@
   height: 30px;
   width: 150px;
   font-size: 18px;
+  background-color: rgb(18, 210, 133);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 2px 2px rgb(99, 99, 100);
+}
+
+.food-result button:hover {
+  background-color: rgb(95, 245, 185);
+  position: relative;
+  top: -1px;
+}
+
+.food-result button:active {
+  background-color: rgb(16, 168, 107);
+  position: relative;
+  top: 2px;
 }

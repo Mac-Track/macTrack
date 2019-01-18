@@ -4,7 +4,27 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   }
-.about-image {
+
+  .about-subtitle {
+    background-color: rgb(99, 99, 100);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    
+  }
+ .about-title {
+   font-size: 80px;
+ }
+
+ .about-team {
+   background-color: rgb(232, 65, 16);
+ }
+
+ .about-team-title {
+   font-size: 30px;
+ }
+
+  .about-image {
   width: 10%;
   height: auto;
   
@@ -16,6 +36,7 @@
 
 .about-deck {
   overflow: hidden;
+  border:1px solid black;
 }
 
 .about-deck > div {
@@ -24,13 +45,21 @@
 
 .about-blurb {
   text-align: left;
+  font-size: 20px;
 }
 
 .about-name {
   font-weight: bold;
 }
+
+.about-footer {
+  background-color: rgb(232, 65, 16);
+}
+
+.about-team-section {
+  margin-top: 210px;
+}
   
-@media (min-width: 768px){
 .homepage { 
   background:
     linear-gradient(
@@ -61,11 +90,10 @@ font-size: 24px;
 }
 .footer {
 font-size: 14px;
-display: flex;
-align-content: flex-end center;
 }
 .links {
   font-size: 14px;
+  display: inline-block;
 }
 .indexH1 {
   font-size: 56px;
@@ -73,4 +101,18 @@ align-content: flex-end center;
 .indexH3 {
   font-size: 18px;
 }
+
+/* disclaimer page */
+
+.dis {
+  background-color: rgb(240, 243, 237);
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  left: 0;
+  line-height: 50%;
+  position: absolute;
+  top: 50%;
+  width: 100%;
 }
+
