@@ -83,7 +83,7 @@
         <% fatPercent = Math.round((fatPercent / macro_targets.fat) * 100); %>
         <% carbPercent = Math.round((carbPercent / macro_targets.carbs) * 100); %>
         <% caloriePercent = Math.round(((caloriePercent - caloriesBurned) / macro_targets.calories) * 100); %>
-
+        
         <% let maxY = 100; %>
         <% if(proteinPercent > maxY) maxY = proteinPercent; %>
         <% if(fatPercent > maxY) maxY = fatPercent; %>
@@ -94,19 +94,20 @@
 
         var ctx = document.getElementById("myChart").getContext('2d');
         
+        Chart.scaleService.updateScaleDefaults('linear', {
+          ticks: {
+            min: 0,
+            max: <%= maxY %>
+          }
+        });
+        
         var myChart = new Chart(ctx, {
           type: 'bar',
           data: {
             labels: ["Protein", "Fat", "Carbs", "Calories"],
             datasets: [{
               label: 'Nutrition',
-              <% var tempPro = 0; %>
-              <% var tempFat = 0; %>
-              <% var tempCarb = 0; %>
-              <% var tempCal = 0; %>
-              <% food_entry.forEach (food => { %>
-            data: ["<%= tempPro+= parseInt(food.protein) %>", "<%= tempFat+= parseInt(food.fat) %>", "<%= tempCarb+= parseInt(food.carbs) %>", "<%= tempCal+= parseInt(food.calories) %>"],
-            <%}) %>
+              data: ["<%= proteinPercent %>", "<%= fatPercent %>", "<%= carbPercent %>", "<%= caloriePercent %>"],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',

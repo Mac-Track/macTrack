@@ -283,8 +283,8 @@ function exerciseSearch(url, id, query, res){
 
 function renderDash (req, res) {
   var dateStr = new Date().toDateString();
-  let id = req.params.id;
-  console.log(new Date().toDateString());
+  let id = parseInt(req.params.id);
+  
   let sql = `SELECT * FROM food_entry WHERE fk_users = '${id}' AND date = '${dateStr}'`;
   let foods = [];
   client.query(sql)
@@ -292,12 +292,17 @@ function renderDash (req, res) {
     foods = [...data.rows];
   });
 
-  console.log(foods);
+  let sql2 = `SELECT protein, fat, carbs, calories FROM users WHERE id = '${id}'`;
+  let targets;
+  client.query(sql2)
+    .then(targetResults => {
+      targets = targetResults.rows[0];
+    })
 
-  let sql2 = `SELECT * FROM exercise WHERE fk_users = '${id}' AND date = '${dateStr}'`;
-  return client.query(sql2)
+  let sql3 = `SELECT * FROM exercise WHERE fk_users = '${id}' AND date = '${dateStr}'`;
+  return client.query(sql3)
     .then(result => {
-      res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id});
+      res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id, macro_targets: targets});
     })
     .catch(err => {
       res.render('pages/error', {err});
