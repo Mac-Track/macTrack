@@ -1,9 +1,16 @@
-#dash-page{
-    display: inline;
-    background-color:red;
+
+#dash-body {
+    background-color:lightgrey;
+}
+ 
+#dash-page {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-column-gap: 5px;
 }
 
-#dash-table tr{
+
+#dash-table tr {
     background-color: black;
     color: aliceblue;
     width: 20%;
@@ -13,9 +20,8 @@
 }
 
 #chartSize {
-    position: absolute;
-    margin-top: 0%;
-    margin-left: 60%;
+    grid-column: 2 / 4;
+
 }
 
 

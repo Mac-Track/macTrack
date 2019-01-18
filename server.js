@@ -12,11 +12,12 @@ const methodOverride = require('method-override');
 const session = require('express-session');
 const flash = require('express-flash-messages');
 const validator = require('express-validator');
+const http = require('http')
 
 app.set('view engine', 'ejs');
 
 const PORT = process.env.PORT || 3000;
-let msg;
+
 //===========================
 // Load Environment Variables
 //===========================
@@ -27,25 +28,44 @@ require('dotenv').config();
 //===========================
 
 //Session Middleware
-app.use(session ({ 
-  secret: 'secret',
-  resave: false,
-  saveUnitialized: true
+
+var sessionStore = new session.MemoryStore;
+
+app.use(session({
+  cookie: { maxAge: 60000 },
+  store: sessionStore,
+  saveUninitialized: true,
+  resave: 'true',
+  secret: 'secret'
 }));
-
-
-
 app.use(flash());
-
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
-app.use(require('connect-flash')());
-app.use(function (req, res, next) {
-  res.locals.messages = require('express-messages')(req, res);
-  next();
-});
 
+app.use(function(req,res,next){
+  res.locals.userValue = null;
+  res.locals.errors = null;
+  next();
+})
+
+// From - https://github.com/ctavan/express-validator
+app.use(validator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+ 
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 //===========================
 // EJS
 //===========================
@@ -64,6 +84,7 @@ client.on('error', err => console.log('||||||||||||||||||||||||client error|||||
 //===========================
 // Routes
 //===========================
+
 /////////index.ejs///////////
 app.get('/', renderHome);
 
@@ -117,6 +138,7 @@ app.get('/dash/:id', renderDash);
 
 /////////add.ejs///////////
 app.get('/add/:id/:type', renderAdd);
+
 
 function renderAdd(req, res){
   let type = req.params.type;
@@ -259,15 +281,22 @@ function renderDash (req, res) {
   let sql2 = `SELECT protein, fat, carbs, calories FROM users WHERE id = '${id}'`;
   let targets;
   client.query(sql2)
-    .then(targetResults => {
-      targets = targetResults.rows[0];
-    })
-
+  .then(targetResults => {
+    targets = targetResults.rows[0];
+  })
   let sql3 = `SELECT * FROM exercise WHERE fk_users = '${id}' AND date = '${dateStr}'`;
   return client.query(sql3)
-    .then(result => {
-      res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id, macro_targets: targets});
-      const newTargets = targets;
+  .then(result => {
+   
+      // for(var i in foods) {
+      //   if(foods[i].name != '' || foods[i].protein != '' || foods[i].carbs != '' || foods[i].calories != '') {
+        res.render('pages/dash', {food_entry: foods, exercise_entry: result.rows, date: dateStr, user_id: id, macro_targets: targets});
+      // }
+      // else {
+      //   window.stop();
+        
+      //   }
+      // }
     })
     .catch(err => {
       res.render('pages/error', {err});
@@ -306,12 +335,6 @@ function save (req, res) {
     
     return client.query(SQL, foodArray)
     .then(result => {
-      if(parseFloat(req.body.protein) != 'number') {
-        req.flash("info", "Invalid Input");
-        const flashMessages = res.locals.getMessages();
-        msg = ('flash', flashMessages);
-        console.log(msg)
-      }
         res.redirect(`/dash/${req.body.user_id}`);
       })
       .catch(err => console.log(err));
@@ -391,4 +414,3 @@ function Exercise(name, calories, image_url){
   this.calories = calories;
   this.image_url = image_url;
 }
-

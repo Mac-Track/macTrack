@@ -13,6 +13,9 @@
                 <li><button><a href="/dash/<%= data.user_id %>">Dashboard</a></button></li>
                 <li><button><a href="/add/<%= data.user_id %>/food">Add Food</a></button></li>
                 <li><button><a href="/add/<%= data.user_id %>/exercise">Add Exercise</a></button></li>
+
+        
+
             </ul>
           </nav>
         </header>
@@ -75,6 +78,7 @@
         </label>
         <label for="protein">
           Protein
+          <%= typeof data.protein!='undefined' ? data.protein : 'Invalid Input' %>
           <input type="text" name="protein" placeholder="Protein" value=<%= data.protein %>><br>
         </label>
         <label for="fat">
@@ -143,15 +147,7 @@
         
         <input type="submit" value="Submit">
     <% } %>
-    
-    <div id="messages">
-      <% Object.keys(messages).forEach(function (type) { %>
-        <ul class="<%= type %>">
-        <% messages[type].forEach(function (message) { %>
-          <li><%= message %></li>
-        <% }) %>
-        </ul>
-      <% }) %>
+  
       </div>
   </main>
 </body>
