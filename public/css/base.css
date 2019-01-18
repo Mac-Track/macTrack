@@ -1,3 +1,35 @@
+.about-body {
+  background-color: rgb(240, 243, 237);
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  }
+.about-image {
+  width: 10%;
+  height: auto;
+  
+}
+
+.left {
+  float: left;
+}
+
+.about-deck {
+  overflow: hidden;
+}
+
+.about-deck > div {
+  width: 80%;
+}
+
+.about-blurb {
+  text-align: left;
+}
+
+.about-name {
+  font-weight: bold;
+}
+  
 @media (min-width: 768px){
 .homepage { 
   background:
