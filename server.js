@@ -77,17 +77,19 @@ function renderRegister (req, res){
 
 function saveRegistration (req, res){
   let data = req.body;
-  let userHeight = (data.feet*12) + data.inches;
-  let newUser = new User(data.name, data.age, data.sex, data.weight, userHeight, data.activity_level);
+  let userHeight = (parseInt(data.feet) * 12) + parseInt(data.inches);
+  
+  let newUser = new User(data.name, data.age, data.sex, parseInt(data.weight), userHeight, data.activity_level);
 
   let sql = `INSERT INTO users 
-  (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-  RETURNING id`;
+              (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+              RETURNING id`;
   let values = [
-    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee().calories
+    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee()
   ];
+
   return client.query(sql, values)
-  .then(result => {
+    .then(result => {
       res.redirect(`/dash/${result.rows[0].id}`);
     })
     .catch(err => console.log('||||||||||||||||||||||||saveRegistration error|||||||||||||||||||||||', err));
@@ -344,8 +346,8 @@ function User(name, age, sex, weight, height, activity_level) {
   this.sex = sex;
   this.weight = parseFloat((weight / 2.2).toFixed(2));
   this.height = parseFloat((height * 2.54).toFixed(2));
-  this.activity_level = activity_level;
-}
+  this.activity_level = parseFloat(activity_level);
+} 
 
 User.prototype.bmr = function() {
   let result = (10 * this.weight) + (6.25 * this.height) - (5 * this.age);
@@ -357,21 +359,21 @@ User.prototype.bmr = function() {
   }
 
   return parseInt(result);
-};
+}
 
 User.prototype.tdee = function() {
-  return parseInt(this.bmr() * this.activityMultiplier);
-};
+  return parseInt(this.bmr() * this.activity_level);
+}
 
 User.prototype.macronutrients = function() {
   let tdee = this.tdee();
-
+  
   let protein = parseInt(this.weight * 0.8);
   let fat = parseInt((tdee * 0.2) / 9);
   let carbs = parseInt((tdee - (protein * 4) - (fat * 9)) / 4);
-
-  return {'protein': protein, 'fat': fat, 'carbs': carbs};
-};
+  
+  return {"protein": protein, "fat": fat, "carbs": carbs};
+}
 
 function Food(name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
   this.name = name;
