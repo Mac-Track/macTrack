@@ -4,7 +4,27 @@
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
   }
-.about-image {
+
+  .about-subtitle {
+    background-color: rgb(99, 99, 100);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    
+  }
+ .about-title {
+   font-size: 80px;
+ }
+
+ .about-team {
+   background-color: rgb(232, 65, 16);
+ }
+
+ .about-team-title {
+   font-size: 30px;
+ }
+
+  .about-image {
   width: 10%;
   height: auto;
   
@@ -16,6 +36,7 @@
 
 .about-deck {
   overflow: hidden;
+  border:1px solid black;
 }
 
 .about-deck > div {
@@ -24,10 +45,19 @@
 
 .about-blurb {
   text-align: left;
+  font-size: 20px;
 }
 
 .about-name {
   font-weight: bold;
+}
+
+.about-footer {
+  background-color: rgb(232, 65, 16);
+}
+
+.about-team-section {
+  margin-top: 210px;
 }
   
 @media (min-width: 768px){
