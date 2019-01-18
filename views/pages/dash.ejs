@@ -42,25 +42,10 @@
       </tr><br>
     </table> <%}) %>
 
-    <form action="/add/<%= user_id %>/food">
-      <input type="hidden" name="user_id" value=<%= user_id %>>
-      <button type="submit">Add Food</button>
-    </form>
-
-    <form action="/add/<%= user_id %>/exercise">
-      <input type="hidden" name="user_id" value=<%= user_id %>>
-      <button type="submit">Add Exercise</button>
-
-    </form>
   </div> 
     <% include chart.html %>
-<<<<<<< HEAD
-  
-    <div id="chartSize" style="width: 40%; height:40%">
-=======
     
     <div id="chartSize">
->>>>>>> 0181b88b2c7d7948ecca79e193536f36c03992bc
       <canvas id="myChart"></canvas>
       
       <script>
@@ -80,12 +65,14 @@
               <% food_entry.forEach (food => { %>
             data: ["<%= tempPro+= parseInt(food.protein) %>", "<%= tempFat+= parseInt(food.fat) %>", "<%= tempCarb+= parseInt(food.carbs) %>", "<%= tempCal+= parseInt(food.calories) %>"],
             <%}) %>
+            
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
             ],
+            
             borderColor: [
                 'rgba(255,99,132,1)',
                 'rgba(54, 162, 235, 1)',
@@ -104,17 +91,11 @@
                 ticks: {
                     beginAtZero:true
                 }
-<<<<<<< HEAD
-            }
-        });
-       
-=======
             }]
         }
     }
 });
 
->>>>>>> 0181b88b2c7d7948ecca79e193536f36c03992bc
  </script>
  </div>
 </div>
