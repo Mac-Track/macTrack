@@ -54,80 +54,67 @@
     </form>
   </div> 
     <% include chart.html %>
+<<<<<<< HEAD
   
     <div id="chartSize" style="width: 40%; height:40%">
+=======
+    
+    <div id="chartSize">
+>>>>>>> 0181b88b2c7d7948ecca79e193536f36c03992bc
       <canvas id="myChart"></canvas>
       
       <script>
-        // Targets Math
-        <% var proteinPercent = 0; %>
-        <% var fatPercent = 0; %>
-        <% var carbPercent = 0; %>
-        <% var caloriePercent = 0; %>
-        <% food_entry.forEach (food => { %>
-          <% proteinPercent += parseInt(food.protein); %>
-          <% fatPercent += parseInt(food.fat); %>
-          <% carbPercent += parseInt(food.carbs); %>
-          <% caloriePercent += parseInt(food.calories); %>
-        <% }) %>
-
-        <% proteinPercent = Math.round((proteinPercent / macro_targets.protein) * 100); %>
-        <% fatPercent = Math.round((fatPercent / macro_targets.fat) * 100); %>
-        <% carbPercent = Math.round((carbPercent / macro_targets.carbs) * 100); %>
-        <% caloriePercent = Math.round((caloriePercent / macro_targets.calories) * 100); %>
-
-        <% let maxY = 100; %>
-        <% if(proteinPercent > maxY) maxY = proteinPercent; %>
-        <% if(fatPercent > maxY) maxY = fatPercent; %>
-        <% if(carbPercent > maxY) maxY = carbPercent; %>
-        <% if(caloriePercent > maxY) maxY = caloriePercent; %>
-
-        // Chart Set Up
-        var ctx = document.getElementById("myChart").getContext('2d');
-        Chart.scaleService.updateScaleDefaults('linear', {
-          ticks: {
-            min: 0,
-            max: <%= maxY %>
-          }
-        });
         
-
+        var ctx = document.getElementById("myChart").getContext('2d');
+        
         var myChart = new Chart(ctx, {
           type: 'bar',
           data: {
             labels: ["Protein", "Fat", "Carbs", "Calories"],
             datasets: [{
               label: 'Nutrition',
-              data: ["<%= proteinPercent %>", "<%= fatPercent %>", "<%= carbPercent %>", "<%= caloriePercent %>"],
-              backgroundColor: [
+              <% var tempPro = 0; %>
+              <% var tempFat = 0; %>
+              <% var tempCarb = 0; %>
+              <% var tempCal = 0; %>
+              <% food_entry.forEach (food => { %>
+            data: ["<%= tempPro+= parseInt(food.protein) %>", "<%= tempFat+= parseInt(food.fat) %>", "<%= tempCarb+= parseInt(food.carbs) %>", "<%= tempCal+= parseInt(food.calories) %>"],
+            <%}) %>
+            backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
                 'rgba(75, 192, 192, 0.2)',
-              ],
-              borderColor: [
+            ],
+            borderColor: [
                 'rgba(255,99,132,1)',
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)',
                 'rgba(75, 192, 192, 1)',
-              ],
-              borderWidth: 1
-              }]
-            },
-            options: {
-                scales: {
-                  xAxes: [{
-                        stacked: true
-                      }],
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+          xAxes: [{
+                stacked: true
+              }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
                 }
+<<<<<<< HEAD
             }
         });
        
+=======
+            }]
+        }
+    }
+});
+
+>>>>>>> 0181b88b2c7d7948ecca79e193536f36c03992bc
  </script>
  </div>
 </div>
