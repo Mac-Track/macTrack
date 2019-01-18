@@ -61,16 +61,29 @@ font-size: 24px;
 }
 .footer {
 font-size: 14px;
-display: flex;
-align-content: flex-end center;
 }
 .links {
   font-size: 14px;
+  display: inline-block;
 }
 .indexH1 {
   font-size: 56px;
 }
 .indexH3 {
   font-size: 18px;
+}
+
+/* disclaimer page */
+
+.dis {
+  background-color: rgb(240, 243, 237);
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  left: 0;
+  line-height: 50%;
+  position: absolute;
+  top: 50%;
+  width: 100%;
 }
 }
