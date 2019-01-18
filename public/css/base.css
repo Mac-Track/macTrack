@@ -30,3 +30,47 @@
   font-weight: bold;
 }
   
+@media (min-width: 768px){
+.homepage { 
+  background:
+    linear-gradient(
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+  url(../images/stretch.jpg);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 2em; 
+  color:rgb(240, 243, 237);
+  padding-top: 50px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+.home {
+  margin: auto;
+  text-align: center;
+  /* width: 300px; */
+}
+.p {
+float: left;
+width: 600px;
+font-size: 24px;
+}
+.footer {
+font-size: 14px;
+display: flex;
+align-content: flex-end center;
+}
+.links {
+  font-size: 14px;
+}
+.indexH1 {
+  font-size: 56px;
+}
+.indexH3 {
+  font-size: 18px;
+}
+}

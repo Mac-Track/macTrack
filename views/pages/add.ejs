@@ -8,7 +8,7 @@
     <header>
         <nav>
             <ul>
-                <li><a href="/dash/<%= user_id %>"">Dashboard</a></li>
+                <li><button><a href="/dash/<%= user_id %>"">Dashboard</a></button></li>
                 <% let addUrl = '/add/' %>
                 <% let addStr = 'Add ' %>
                 <% if(search_type === 'food') { %>
@@ -18,7 +18,7 @@
                     <% addUrl += user_id + '/food' %>
                     <% addStr += 'Food'; %>
                 <% } %>
-                    <li><a href=<%= addUrl %>><%= addStr %></a></li>
+                    <li><button><a href=<%= addUrl %>><%= addStr %></a></button></li>
             </ul>
         </nav>
     </header>
@@ -56,7 +56,7 @@
                     <p>fat <%= entry.fat %></p>
                     <p>carbs <%= entry.carbs %></p>
                 </div>
-           <% }) %>
+        <% }) %>
         </section>
         <br>
         <input type="submit" value="Submit">
