@@ -2,15 +2,18 @@
 #dash-body {
     background-color:rgb(240, 243, 237);
     font-family: 'Mukta', sans-serif;
+    background: transparent;
+    border: 25px solid transparent;
+    border-image: url("/images/sunset.png") 500 stretch;
 }
 
 #dash-date {
+    color: black;
     font-size:56px;
     font-family:arial;
     border-width: 50px;
     border-style: solid;
-    /* border-image: url("/images/Leaf.jpg") 25% round; */
-    background-image: url("/images/Leaf.jpg")
+    border-image-source: url("/image/Leaf.png")
 }
  
 #dash-page {
