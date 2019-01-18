@@ -1,17 +1,31 @@
 
 #dash-body {
-    background-color:lightgrey;
+    background-color:rgb(240, 243, 237);
+    font-family: 'Mukta', sans-serif;
+}
+
+#dash-date {
+    font-size:56px;
+    font-family:arial;
+    border-width: 50px;
+    border-style: solid;
+    /* border-image: url("/images/Leaf.jpg") 25% round; */
+    background-image: url("/images/Leaf.jpg")
 }
  
 #dash-page {
     display: grid;
     grid-template-columns: auto auto auto auto;
     grid-column-gap: 0%;
+    grid-template-rows: auto auto auto auto;
+    grid-row-gap: 0%;
 }
 
+#dash-table {
+}
 
 #dash-table tr {
-    background-color: black;
+    background-color: rgb(232, 65, 16);
     color: aliceblue;
     width: 10%;
     height: 50%;
@@ -20,19 +34,21 @@
 }
 
 #chartSize {
-    grid-column: 2 / 4;
+    background-color: lightcyan;
+    width: 50%;
+    float: right;
+    margin-top: -25%;
 }
 
 
 #myChart {
-    background-color: rgb(69, 117, 161);
-    float: right;
     color: white;
+   
 }
 
 table {
     border-collapse: collapse; 
-    /* border: 1pt solid black; */
+    border: 1pt solid black;
 
 }
 
@@ -44,13 +60,13 @@ table td {
     padding: 0%;
 }
 
-button {
+.button {
     border-radius: 10%;
     background-color: rgb(155, 61, 61);
+    color: whitesmoke;
+    float: left;
+    font-family: 'Aleo', sans-serif;
 }
 
-button a {
-    color: aliceblue;
 
-}
 

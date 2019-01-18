@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../partials/head.ejs') %>
-    <title>Customize Entry</title>
-  </head>
-  <img src=<%= data.image_url %> alt=<%= data.name %>>
+<head>
+  <%- include('../partials/head.ejs') %>
+  <title>Customize Entry</title>
+</head>
 <body>
   <main>
       <header>
@@ -59,8 +58,8 @@
   
       </form>
 
-      <% } else if(data.type === 'food'){ %>
-    
+    <% } else if(data.type === 'food'){ %>
+     
       <form action="/save" method="POST">
 
         <input type="hidden" name="user_id" value=<%= data.user_id %>>
@@ -78,7 +77,6 @@
         </label>
         <label for="protein">
           Protein
-          <%= typeof data.protein!='undefined' ? data.protein : 'Invalid Input' %>
           <input type="text" name="protein" placeholder="Protein" value=<%= data.protein %>><br>
         </label>
         <label for="fat">
@@ -147,8 +145,6 @@
         
         <input type="submit" value="Submit">
     <% } %>
-  
-      </div>
   </main>
 </body>
 </html>

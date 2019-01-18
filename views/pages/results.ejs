@@ -15,53 +15,51 @@
         </ul>
       </nav>
     </header>
-    <section class="all-results">
+    <% if(search_type === 'food'){ %>
+      <% data.forEach(food => { %>
+        <% console.log(food); %>
+        <div class="food-result">
+          <h2><%= food.name %></h2>
+          <img src=<%= food.image_url %> alt=<%= food.name %>>
+          <p>Serving Size: <%= food.serving_size %></p>
+          <p>Serving Unit: <%= food.serving_unit %></p>
+          <p>Protein: <%= food.protein %></p>
+          <p>Fat: <%= food.fat %></p>
+          <p>Carbs: <%= food.carbs %></p>
+          <p>Calories: <%= food.calories %></p>
+          
+          <form action="/custom" method="POST">
+            <input type="hidden" name="name" value=<%= food.name %>>
+            <input type="hidden" name="image_url" value=<%= food.image_url %>>
+            <input type="hidden" name="serving_size" value=<%= food.serving_size %>>
+            <input type="hidden" name="serving_unit" value=<%= food.serving_unit %>>
+            <input type="hidden" name="protein" value=<%= food.protein %>>
+            <input type="hidden" name="fat" value=<%= food.fat %>>
+            <input type="hidden" name="carbs" value=<%= food.carbs %>>
+            <input type="hidden" name="calories" value=<%= food.calories %>>
+            <input type="hidden" name="type" value="food">
+            <input type="hidden" name="user_id" value=<%= user_id %>>
+            <button type="submit">Select</button>
+          </form>
+        </div>
+      <% }) %>
 
-      <% if(search_type === 'food'){ %>
-        <% data.forEach(food => { %>
-          <div class="food-result">
-            <h2><%= food.name %></h2>
-            <img src=<%= food.image_url %> alt=<%= food.name %>>
-            <p>Serving Size: <%= food.serving_size %></p>
-            <p>Serving Unit: <%= food.serving_unit %></p>
-            <p>Protein: <%= food.protein %></p>
-            <p>Fat: <%= food.fat %></p>
-            <p>Carbs: <%= food.carbs %></p>
-            <p>Calories: <%= food.calories %></p>
-            
-            <form action="/custom" method="POST">
-              <input type="hidden" name="name" value=<%= food.name %>>
-              <input type="hidden" name="image_url" value=<%= food.image_url %>>
-              <input type="hidden" name="serving_size" value=<%= food.serving_size %>>
-              <input type="hidden" name="serving_unit" value=<%= food.serving_unit %>>
-              <input type="hidden" name="protein" value=<%= food.protein %>>
-              <input type="hidden" name="fat" value=<%= food.fat %>>
-              <input type="hidden" name="carbs" value=<%= food.carbs %>>
-              <input type="hidden" name="calories" value=<%= food.calories %>>
-              <input type="hidden" name="type" value="food">
-              <input type="hidden" name="user_id" value=<%= user_id %>>
-              <button type="submit">Select</button>
-            </form>
-          </div>
-        <% }) %>
-  
-      <% } else if(search_type === 'exercise'){ %>
-        <div class="exercise-result">
-            <h2><%= data.name %></h2>
-            <img src=<%= data.image_url %> alt=<%= data.name %>>
-            <p>Calories Burned: <%= data.calories %></p>
-            
-            <form action="/custom" method="POST">
-              <input type="hidden" name="name" value=<%= data.name %>>
-              <input type="hidden" name="image_url" value=<%= data.image_url %>>
-              <input type="hidden" name="calories" value=<%= data.calories %>>
-              <input type="hidden" name="type" value="exercise">
-              <input type="hidden" name="user_id" value=<%= user_id %>>
-              <button type="submit">Select</button>
-            </form>
-          </div>
-      <% } %>
-    </section>
+    <% } else if(search_type === 'exercise'){ %>
+      <div class="exercise-result">
+          <h2><%= data.name %></h2>
+          <img src=<%= data.image_url %> alt=<%= data.name %>>
+          <p>Calories Burned: <%= data.calories %></p>
+          
+          <form action="/custom" method="POST">
+            <input type="hidden" name="name" value=<%= data.name %>>
+            <input type="hidden" name="image_url" value=<%= data.image_url %>>
+            <input type="hidden" name="calories" value=<%= data.calories %>>
+            <input type="hidden" name="type" value="exercise">
+            <input type="hidden" name="user_id" value=<%= user_id %>>
+            <button type="submit">Select</button>
+          </form>
+        </div>
+    <% } %>
   </main>
   <%- include('../partials/footer.ejs') %>
 </body>
