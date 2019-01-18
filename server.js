@@ -9,10 +9,6 @@ const app = express();
 const superagent = require('superagent');
 const pg = require('pg');
 const methodOverride = require('method-override');
-const session = require('express-session');
-const flash = require('express-flash-messages');
-const validator = require('express-validator');
-const http = require('http')
 
 app.set('view engine', 'ejs');
 
@@ -23,22 +19,10 @@ const PORT = process.env.PORT || 3000;
 //===========================
 
 require('dotenv').config();
+
 //===========================
 // Middleware
 //===========================
-
-//Session Middleware
-
-var sessionStore = new session.MemoryStore;
-
-app.use(session({
-  cookie: { maxAge: 60000 },
-  store: sessionStore,
-  saveUninitialized: true,
-  resave: 'true',
-  secret: 'secret'
-}));
-app.use(flash());
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
@@ -49,35 +33,6 @@ app.use(methodOverride((req, res) => {
     return method;
   }
 }));
-
-app.use(function(req,res,next){
-  res.locals.userValue = null;
-  res.locals.errors = null;
-  next();
-})
-
-// From - https://github.com/ctavan/express-validator
-app.use(validator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
- 
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param : formParam,
-      msg   : msg,
-      value : value
-    };
-  }
-}));
-//===========================
-// EJS
-//===========================
-
-// app.set('view engine', 'ejs');
 
 //=======================
 // Database - PostgresSQL
@@ -122,17 +77,19 @@ function renderRegister (req, res){
 
 function saveRegistration (req, res){
   let data = req.body;
-  let userHeight = (data.feet*12) + data.inches;
-  let newUser = new User(data.name, data.age, data.sex, data.weight, userHeight, data.activity_level);
+  let userHeight = (parseInt(data.feet) * 12) + parseInt(data.inches);
+  
+  let newUser = new User(data.name, data.age, data.sex, parseInt(data.weight), userHeight, data.activity_level);
 
   let sql = `INSERT INTO users 
-  (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-  RETURNING id`;
+              (name, sex, age, weight, height, activity_level, protein, fat, carbs, calories) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+              RETURNING id`;
   let values = [
-    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee().calories
+    newUser.name, newUser.sex, newUser.age, newUser.weight, newUser.height, newUser.activity_level, newUser.macronutrients().protein, newUser.macronutrients().fat, newUser.macronutrients().carbs, newUser.tdee()
   ];
+
   return client.query(sql, values)
-  .then(result => {
+    .then(result => {
       res.redirect(`/dash/${result.rows[0].id}`);
     })
     .catch(err => console.log('||||||||||||||||||||||||saveRegistration error|||||||||||||||||||||||', err));
@@ -277,7 +234,7 @@ function exerciseSearch(url, id, query, res){
 }
   
   
-  //===========================
+//===========================
 // Dashboard Function
 //===========================
 
@@ -389,8 +346,8 @@ function User(name, age, sex, weight, height, activity_level) {
   this.sex = sex;
   this.weight = parseFloat((weight / 2.2).toFixed(2));
   this.height = parseFloat((height * 2.54).toFixed(2));
-  this.activity_level = activity_level;
-}
+  this.activity_level = parseFloat(activity_level);
+} 
 
 User.prototype.bmr = function() {
   let result = (10 * this.weight) + (6.25 * this.height) - (5 * this.age);
@@ -402,21 +359,21 @@ User.prototype.bmr = function() {
   }
 
   return parseInt(result);
-};
+}
 
 User.prototype.tdee = function() {
-  return parseInt(this.bmr() * this.activityMultiplier);
-};
+  return parseInt(this.bmr() * this.activity_level);
+}
 
 User.prototype.macronutrients = function() {
   let tdee = this.tdee();
-
+  
   let protein = parseInt(this.weight * 0.8);
   let fat = parseInt((tdee * 0.2) / 9);
   let carbs = parseInt((tdee - (protein * 4) - (fat * 9)) / 4);
-
-  return {'protein': protein, 'fat': fat, 'carbs': carbs};
-};
+  
+  return {"protein": protein, "fat": fat, "carbs": carbs};
+}
 
 function Food(name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
   this.name = name;
