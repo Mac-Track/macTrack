@@ -60,7 +60,6 @@
   margin-top: 210px;
 }
   
-@media (min-width: 768px){
 .homepage { 
   background:
     linear-gradient(
@@ -116,4 +115,4 @@ font-size: 14px;
   top: 50%;
   width: 100%;
 }
-}
+
