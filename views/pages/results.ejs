@@ -2,16 +2,18 @@
 <html lang="en">
 <head>
   <%- include('../partials/head.ejs') %>
+  <link href="https://fonts.googleapis.com/css?family=Abril+Fatface%7CRoboto:300,700" rel="stylesheet">
   <title>Search Results</title>
 </head>
 <body>
   <main class="results-page">
-    <header>
+    <header class="page-links">
       <nav>
+        <h1>MacTrack</h1>
         <ul>
-            <li><button><a href="/dash/<%= user_id %>"">Dashboard</a></button></li>
-            <li><button><a href="/add/<%= user_id %>/food">Add Food</a></button></li>
-            <li><button><a href="/add/<%= user_id %>/exercise">Add Exercise</a></button></li>
+          <li><a href="/dash/<%= user_id %>"><button>Dashboard</button></a></li>
+          <li><a href="/add/<%= user_id %>/food"><button>Add Food</button></a></li>
+          <li><a href="/add/<%= user_id %>/exercise"><button>Add Exercise</button></a></li>
         </ul>
       </nav>
     </header>
@@ -24,9 +26,9 @@
             <img src=<%= food.image_url %> alt=<%= food.name %>>
             <p>Serving Size: <%= food.serving_size %></p>
             <p>Serving Unit: <%= food.serving_unit %></p>
-            <p>Protein: <%= food.protein %></p>
-            <p>Fat: <%= food.fat %></p>
-            <p>Carbs: <%= food.carbs %></p>
+            <p>Protein: <%= food.protein %> grams</p>
+            <p>Fat: <%= food.fat %> grams</p>
+            <p>Carbs: <%= food.carbs %> grams</p>
             <p>Calories: <%= food.calories %></p>
             
             <form action="/custom" method="POST">

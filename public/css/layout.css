@@ -1,5 +1,9 @@
+/* ======= */
+/* Results */
+/* ======= */
+
 .results-page {
-  background-color: rgb(99, 99, 100);
+  background-color: rgb(240, 243, 237);
 }
 
 .all-results{
@@ -10,13 +14,14 @@
 }
 
 .food-result {
-  width: 400px;
+  min-width: 400px;
   min-height: 250px;
+  flex-grow: 1;
   background-color: rgb(28, 185, 237);
   border: 1px solid black;
   border-radius: 3px;
   text-align: center;
-  margin: 10px;
+  margin: 15px;
   font-family: sans-serif;
 }
 
@@ -24,12 +29,18 @@
   margin-top: 10px;
   font-size: 45px;
   color: rgb(232, 65, 16);
-  text-shadow: 1px 2px 2px rgb(99, 99, 100);
+  text-shadow: 1px 2px 2px rgb(144, 144, 148);
 }
 
 .food-result img {
   margin: 10px 0 10px 0;
   width: 300px;
+  background-color: rgb(240, 243, 237);
+  box-shadow: 2px 4px 4px rgb(99, 99, 100);
+}
+
+.food-result p {
+  margin: 0 0 6px 0;
 }
 
 .food-result button {
@@ -46,11 +57,74 @@
 .food-result button:hover {
   background-color: rgb(95, 245, 185);
   position: relative;
-  top: -1px;
+  top: -2px;
 }
 
 .food-result button:active {
   background-color: rgb(16, 168, 107);
   position: relative;
-  top: 2px;
+  top: 3px;
 }
+
+/* ======= */
+/* Headers */
+/* ======= */
+
+header.page-links {
+  min-height: 80px;
+  width: 100%;
+  background-color: rgb(99, 99, 100);
+  border: 1px solid black;
+  box-shadow: 1px 0 8px black;
+}
+header.page-links nav {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+header.page-links nav h1 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  text-shadow: 2px 4px 4px rgb(66, 66, 66);
+  display: inline;
+  color: rgb(18, 210, 133);
+  margin: 20px 0 0 40px;
+}
+
+header.page-links nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin: 20px 0 20px 15px;
+}
+
+header.page-links nav ul li button {
+  height: 30px;
+  width: 150px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  background-color: rgb(232, 65, 16);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 2px 2px rgb(64, 64, 65);
+  margin: 0 15px 0 0;
+}
+
+header.page-links nav ul li button:hover {
+  background-color: rgb(248, 149, 82);
+  position: relative;
+  top: -2px;
+}
+
+header.page-links nav ul li button:active {
+  background-color: rgb(194, 57, 16);
+  position: relative;
+  top: 3px;
+}
+
+header.page-links nav ul li button a {
+  text-decoration: none;
+}
+
