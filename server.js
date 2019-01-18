@@ -42,6 +42,13 @@ app.use(flash());
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride((req, res) => {
+  if(req.body && typeof req.body === 'object' && '_method' in req.body){
+    let method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+}));
 
 app.use(function(req,res,next){
   res.locals.userValue = null;
@@ -308,18 +315,16 @@ function custom(req, res) {
   res.render('pages/customize.ejs', {data: selectionData});
 }
 
-
-// app.post('/history', history);
-app.get('/save', save)
-app.post('/save', save)
-
 //===========================
 // Save Function
 //===========================
 
+// app.get('/save', save)
+app.post('/save', save)
 
 function save (req, res) {
   let dateStr = new Date().toDateString();
+
   if(req.body.type === 'food'){
     let SQL = `INSERT INTO food_entry
     (date, name, image_url, protein, fat, carbs, calories, serving_size, serving_unit, fk_users)
@@ -348,6 +353,24 @@ function save (req, res) {
   }      
 }
 
+//===========================
+// Delete Function
+//===========================
+
+app.delete('/delete/:user_id/:entry_id/:table', deleteEntry);
+
+function deleteEntry(req, res){
+  let SQL = `DELETE from ${req.params.table} WHERE id = '${req.params.entry_id}'`;
+  client.query(SQL)
+    .then(result => {
+      res.redirect(`/dash/${req.params.user_id}`);
+    })
+    .catch(err => console.log(err));
+}
+
+//===========================
+// Listener
+//===========================
 
 app.listen(PORT, () => console.log(`app is up on PORT ${PORT}`));
 

@@ -1,70 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-      <link rel="stylesheet" href="/public/css/modules.css">
-    <%- include('../partials/head.ejs') %>
-    <title>Mac-Track Dashboard</title>
-  </head>
-  <body id="dash-body">
-     
-    <header>
-      <nav>
-        
-      </nav>
-    </header>
-   
-  <div id="dash-page">
-    <div id="dash-table">
-  <h2><%= date %></h2>
+
+<head>
+  <%- include('../partials/head.ejs') %>
+  <title>Mac-Track Dashboard</title>
+</head>
+
+<body>
+
+  <header>
+    <nav>
+    </nav>
+  </header>
+
+    <div id="dashboard">
+      <h2><%= date %></h2>
   
-  <% food_entry.forEach (food => { %>
-  <table>
-    <img src=<%= food.image_url %>><br>
-    <tr>
-      <td> <%= food.name %> </td>
-          <td> 'Protein: '<%= food.protein %> </td>
-          <td> 'Fat: '<%= food.fat %> </td>
-          <td> 'Carbs: '<%= food.carbs %> </td>
-          <td> 'Calories: '<%= food.calories %> </td>
-      </tr>
-    </table> <%}) %>
-
-    <form>
-      <button><a href="../add/<%= user_id %>/food">ADD FOOD</a></button>
-      <button><a href="../add/<%= user_id %>/exercise">ADD EXERCISE</a></button>
-      <input type="submit" value="Edit" action="/dash" method="POST">
-
-    <% exercise_entry.forEach (exercise => { %>
-      <tr>
+        <% food_entry.forEach (food => { %>
+          <div id="addDash">
+            <img src=<%= food.image_url %>>
+            <h2> <%= food.name %> </h2>
+            <p> Protein: <%= food.protein %> </p>
+            <p> Fat: <%= food.fat %> </p>
+            <p> Carbs: <%= food.carbs %> </p>
+            <p> Calories: <%= food.calories %> </p>
+            <form action="/delete/<%= user_id %>/<%= food.id %>/food_entry" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <button type="submit" class="delete">Delete Entry</button>
+            </form>
+          </div>
+        <%}) %>
+    
+      <% exercise_entry.forEach (exercise => { %>
+        <div id="addDash">
           <img src=<%= exercise.image_url %>>
-          <td> <%= exercise.name %> </td>
-          <td> 'Calories: '<%= exercise.calories %> </td>
-      </tr><br>
-    </table> <%}) %>
-
+          <h2> <%= exercise.name %> </h2>
+          <p> Calories Burned: <%= exercise.calories %> </p>
+          <form action="/delete/<%= user_id %>/<%= exercise.id %>/exercise" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit" class="delete">Delete Entry</button>
+          </form>
+        </div>
+      <% }) %>
+    
     <form action="/add/<%= user_id %>/food">
-      <input type="hidden" name="user_id" value=<%= user_id %>>
       <button type="submit">Add Food</button>
     </form>
-
+    
     <form action="/add/<%= user_id %>/exercise">
-      <input type="hidden" name="user_id" value=<%= user_id %>>
       <button type="submit">Add Exercise</button>
-
     </form>
-  </div> 
+
+    <button class="edit">Edit</button>
+
     <% include chart.html %>
-<<<<<<< HEAD
   
     <div id="chartSize" style="width: 40%; height:40%">
-=======
-    
-    <div id="chartSize">
->>>>>>> 0181b88b2c7d7948ecca79e193536f36c03992bc
+
       <canvas id="myChart"></canvas>
       
       <script>
-        
+
+        // Targets Math
+        <% var proteinPercent = 0; %>
+        <% var fatPercent = 0; %>
+        <% var carbPercent = 0; %>
+        <% var caloriePercent = 0; %>
+        <% var caloriesBurned = 0; %>
+
+        <% food_entry.forEach (food => { %>
+          <% proteinPercent += parseInt(food.protein); %>
+          <% fatPercent += parseInt(food.fat); %>
+          <% carbPercent += parseInt(food.carbs); %>
+          <% caloriePercent += parseInt(food.calories); %>
+        <% }); %>
+
+        <% exercise_entry.forEach(exercise => { %>
+          <% caloriesBurned += exercise.calories; %>
+        <% }); %>
+
+        <% proteinPercent = Math.round((proteinPercent / macro_targets.protein) * 100); %>
+        <% fatPercent = Math.round((fatPercent / macro_targets.fat) * 100); %>
+        <% carbPercent = Math.round((carbPercent / macro_targets.carbs) * 100); %>
+        <% caloriePercent = Math.round(((caloriePercent - caloriesBurned) / macro_targets.calories) * 100); %>
+
+        <% let maxY = 100; %>
+        <% if(proteinPercent > maxY) maxY = proteinPercent; %>
+        <% if(fatPercent > maxY) maxY = fatPercent; %>
+        <% if(carbPercent > maxY) maxY = carbPercent; %>
+        <% if(caloriePercent > maxY) maxY = caloriePercent; %>
+
+        // Chart Set Up
+
         var ctx = document.getElementById("myChart").getContext('2d');
         
         var myChart = new Chart(ctx, {
@@ -104,20 +131,24 @@
                 ticks: {
                     beginAtZero:true
                 }
-<<<<<<< HEAD
-            }
-        });
-       
-=======
             }]
         }
     }
 });
 
->>>>>>> 0181b88b2c7d7948ecca79e193536f36c03992bc
  </script>
  </div>
 </div>
 </body>
+
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script>
+  $('.delete').hide();
+
+  $('.edit').on('click', function() {
+    $('.delete').toggle();
+  });
+</script>
+
 </html>
