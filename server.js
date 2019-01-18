@@ -9,10 +9,6 @@ const app = express();
 const superagent = require('superagent');
 const pg = require('pg');
 const methodOverride = require('method-override');
-const session = require('express-session');
-const flash = require('express-flash-messages');
-const validator = require('express-validator');
-const http = require('http')
 
 app.set('view engine', 'ejs');
 
@@ -23,22 +19,10 @@ const PORT = process.env.PORT || 3000;
 //===========================
 
 require('dotenv').config();
+
 //===========================
 // Middleware
 //===========================
-
-//Session Middleware
-
-var sessionStore = new session.MemoryStore;
-
-app.use(session({
-  cookie: { maxAge: 60000 },
-  store: sessionStore,
-  saveUninitialized: true,
-  resave: 'true',
-  secret: 'secret'
-}));
-app.use(flash());
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public'));
@@ -49,35 +33,6 @@ app.use(methodOverride((req, res) => {
     return method;
   }
 }));
-
-app.use(function(req,res,next){
-  res.locals.userValue = null;
-  res.locals.errors = null;
-  next();
-})
-
-// From - https://github.com/ctavan/express-validator
-app.use(validator({
-  errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
- 
-    while(namespace.length) {
-      formParam += '[' + namespace.shift() + ']';
-    }
-    return {
-      param : formParam,
-      msg   : msg,
-      value : value
-    };
-  }
-}));
-//===========================
-// EJS
-//===========================
-
-// app.set('view engine', 'ejs');
 
 //=======================
 // Database - PostgresSQL
@@ -277,7 +232,7 @@ function exerciseSearch(url, id, query, res){
 }
   
   
-  //===========================
+//===========================
 // Dashboard Function
 //===========================
 
