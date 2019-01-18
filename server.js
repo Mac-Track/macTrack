@@ -191,72 +191,72 @@ function search(req, res){
   let data = req.body;
   let type = data.search_type;
   let id = data.user_id;
-  let url = 'https://trackapi.nutritionix.com/v2/';
+  let url = `https://trackapi.nutritionix.com/v2/`;
 
   if(type === 'food'){
     url += `search/instant?query=${req.body.query}&detailed=true`;
     foodSearch(url, id, res);
   } else if(type === 'exercise'){
-    url += 'natural/exercise';
+    url += `natural/exercise`;
     exerciseSearch(url, id, req.body.query, res);
   }
 }
 
 function foodSearch(url, id, res){
   return superagent.get(url)
-    .set('Content-Type', 'application/json')
-    .set('x-app-id', `${process.env.X_APP_ID}`)
-    .set('x-app-key', `${process.env.X_APP_KEY}`)
-    .then(result => {
-      let common = JSON.parse(result.res.text);
-      let branded = JSON.parse(result.res.text);
+  .set('Content-Type', 'application/json')
+  .set('x-app-id', `${process.env.X_APP_ID}`)
+  .set('x-app-key', `${process.env.X_APP_KEY}`)  
+  .then(result => {
+    let common = JSON.parse(result.res.text);
+    let branded = JSON.parse(result.res.text);
 
-      let foods = [];
-      for(let i = 0; i < 10; i++){
+    let foods = [];
+    for(let i = 0; i < 10; i++){
       // COMMON
-        let commonProtein = 0;
-        let commonFat = 0;
-        let commonCarbs = 0;
-        let commonCalories = 0;
+      let commonProtein = 0;
+      let commonFat = 0;
+      let commonCarbs = 0;
+      let commonCalories = 0;
 
-        for(let j = 0; j < common.common[i].full_nutrients.length; j++){
-          if(common.common[i].full_nutrients[j].attr_id === 203) commonProtein = common.common[i].full_nutrients[j].value;
-          if(common.common[i].full_nutrients[j].attr_id === 204) commonFat = common.common[i].full_nutrients[j].value;
-          if(common.common[i].full_nutrients[j].attr_id === 205) commonCarbs = common.common[i].full_nutrients[j].value;
-          if(common.common[i].full_nutrients[j].attr_id === 208) commonCalories = common.common[i].full_nutrients[j].value;
-        }
+      for(let j = 0; j < common.common[i].full_nutrients.length; j++){
+        if(common.common[i].full_nutrients[j].attr_id === 203) commonProtein = common.common[i].full_nutrients[j].value;
+        if(common.common[i].full_nutrients[j].attr_id === 204) commonFat = common.common[i].full_nutrients[j].value;
+        if(common.common[i].full_nutrients[j].attr_id === 205) commonCarbs = common.common[i].full_nutrients[j].value;
+        if(common.common[i].full_nutrients[j].attr_id === 208) commonCalories = common.common[i].full_nutrients[j].value;
+      }
+      
+      foods.push(new Food(common.common[i].food_name, common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit));
 
-        foods.push(new Food(common.common[i].food_name, common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit));
+      // BRANDED
+      let brandedProtein = 0;
+      let brandedFat = 0;
+      let brandedCarbs = 0;
+      let brandedCalories = 0;
 
-        // BRANDED
-        let brandedProtein = 0;
-        let brandedFat = 0;
-        let brandedCarbs = 0;
-        let brandedCalories = 0;
-
-        for(let k = 0; k < branded.branded[i].full_nutrients.length; k++){
-          if(branded.branded[i].full_nutrients[k].attr_id === 203) brandedProtein = branded.branded[i].full_nutrients[k].value;
-          if(branded.branded[i].full_nutrients[k].attr_id === 204) brandedFat = branded.branded[i].full_nutrients[k].value;
-          if(branded.branded[i].full_nutrients[k].attr_id === 205) brandedCarbs = branded.branded[i].full_nutrients[k].value;
-          if(branded.branded[i].full_nutrients[k].attr_id === 208) brandedCalories = branded.branded[i].full_nutrients[k].value;
-        }
-
-        foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
+      for(let k = 0; k < branded.branded[i].full_nutrients.length; k++){
+        if(branded.branded[i].full_nutrients[k].attr_id === 203) brandedProtein = branded.branded[i].full_nutrients[k].value;
+        if(branded.branded[i].full_nutrients[k].attr_id === 204) brandedFat = branded.branded[i].full_nutrients[k].value;
+        if(branded.branded[i].full_nutrients[k].attr_id === 205) brandedCarbs = branded.branded[i].full_nutrients[k].value;
+        if(branded.branded[i].full_nutrients[k].attr_id === 208) brandedCalories = branded.branded[i].full_nutrients[k].value;
       }
 
-      res.render('pages/results.ejs', {data: foods, search_type: 'food', user_id: id});
-    })
-    .catch(err => console.log('||||||||||||||||||||||||foodSearch error|||||||||||||||||||||||', err));
+      foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
+    }
+
+    res.render('pages/results.ejs', {data: foods, search_type: 'food', user_id: id});
+  })
+  .catch(err => console.log('||||||||||||||||||||||||foodSearch error|||||||||||||||||||||||', err));
 }
 
 function exerciseSearch(url, id, query, res){
-  let sql = 'SELECT age, sex, height, weight FROM users WHERE id=$1';
+  let sql = `SELECT age, sex, height, weight FROM users WHERE id=$1`;
   let values = [id];
   return client.query(sql, values)
     .then(result => {
-
+      
       return superagent.post(url)
-      .send({
+        .send({
           query: query,
           gender: result.sex,
           weight_kg: parseInt(result.weight),
@@ -265,16 +265,16 @@ function exerciseSearch(url, id, query, res){
         })
         .set('Content-Type', 'application/json')
         .set('x-app-id', `${process.env.X_APP_ID}`)
-        .set('x-app-key', `${process.env.X_APP_KEY}`)
+        .set('x-app-key', `${process.env.X_APP_KEY}`)  
         .then(result => {
           let results = JSON.parse(result.res.text);
           results = results.exercises[0];
           let exerciseData = new Exercise(results.name, results.nf_calories, results.photo.thumb);
           res.render('pages/results.ejs', {data: exerciseData, search_type: 'exercise', user_id: id});
-        });
+        })
     })
     .catch(err => console.log('||||||||||||||||||||||||exerciseSearch error|||||||||||||||||||||||', err));
-  }
+}
   
   
   //===========================
@@ -418,9 +418,7 @@ User.prototype.macronutrients = function() {
   return {'protein': protein, 'fat': fat, 'carbs': carbs};
 };
 
-function Food(id, name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
-  this.id = id;
-  console.log(id)
+function Food(name, image_url, calories, carbs, fat, protein, serving_size, serving_unit){
   this.name = name;
   this.image_url = image_url;
   this.calories = calories;
