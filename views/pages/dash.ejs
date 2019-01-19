@@ -18,8 +18,8 @@
       <h2 id="dash-date"><%= date %></h2><br><span></span><br>
   
         <% food_entry.forEach (food => { %>
-          <div id="addDash">
-            <img src=<%= food.image_url %>>
+          <div class="addDash">
+            <img class="dash-image" src=<%= food.image_url %>>
             <h2> <%= food.name %> </h2>
             <p> Protein: <%= food.protein %>g </p>
             <p> Fat: <%= food.fat %>g </p>
@@ -33,8 +33,8 @@
         <%}) %>
     
       <% exercise_entry.forEach (exercise => { %>
-        <div id="addDash">
-          <img src=<%= exercise.image_url %>>
+        <div class="addDash">
+          <img class="dash-image" src=<%= exercise.image_url %>>
           <h2> <%= exercise.name %> </h2>
           <p> Calories Burned: <%= exercise.calories %> </p>
           <form action="/delete/<%= user_id %>/<%= exercise.id %>/exercise" method="POST">
@@ -93,6 +93,7 @@
 
         // Chart Set Up
 
+        Chart.defaults.global.defaultFontStyle = 'Bold'
         var ctx = document.getElementById("myChart").getContext('2d');
         Chart.scaleService.updateScaleDefaults('linear', {
           ticks: {

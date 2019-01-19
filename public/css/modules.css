@@ -11,8 +11,10 @@
     color: black;
     font-size:56px;
     font-family:arial;
-    border-width: 80px;
+    border-width: 50px;
     border-style: solid;
+    width: 55%;
+    margin-left: -3%;
     border-image-source: url("/image/Leaf.png")
 }
  
@@ -36,10 +38,9 @@
 #chartSize {
     background-color: lightcyan;
     width: 40%;
-    float: right;
-    margin-top: -20%;
+    position:fixed; top:4%; right:0%; 
+  
 }
-
 
 #myChart {
     color: white;
@@ -68,5 +69,12 @@ table td {
     font-family: 'Aleo', sans-serif;
 }
 
+.dash-image {
+    max-width: 200px;
+}
+
+.addDash {
+    margin-left: 60px;
+}
 
 
