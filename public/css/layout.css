@@ -229,3 +229,52 @@ footer.footer-partial a {
   position: relative;
   top: 3px;
 }
+
+/* ======== */
+/*  Custom  */
+/* ======== */
+
+.custom {
+  width: 450px;
+  margin: 20px auto 80px auto;
+  text-align: center !important;
+  font-family: 'Roboto', sans-serif;
+  background-color: rgb(28, 185, 237);
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 15px;
+}
+
+.custom img {
+  margin-bottom: 30px;
+  background-color: rgb(240, 243, 237);
+  box-shadow: 2px 4px 4px rgb(99, 99, 100);
+}
+
+.custom input {
+  margin: 15px auto 15px auto;
+}
+
+.custom button {
+  height: 30px;
+  border: none;
+  margin: 15px 0 0 0;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  background-color: rgb(18, 210, 133);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 2px 2px rgb(99, 99, 100);
+}
+
+.custom button:hover {
+  background-color: rgb(95, 245, 185);
+  position: relative;
+  top: -2px;
+}
+
+.custom button:active {
+  background-color: rgb(16, 168, 107);
+  position: relative;
+  top: 3px;
+}

@@ -287,7 +287,6 @@ function custom(req, res) {
 // Save Function
 //===========================
 
-// app.get('/save', save)
 app.post('/save', save)
 
 function save (req, res) {

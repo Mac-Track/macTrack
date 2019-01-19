@@ -6,61 +6,59 @@
 </head>
 <body>
   <main>
-      <header>
-          <nav>
-            <ul>
-                <li><button><a href="/dash/<%= data.user_id %>">Dashboard</a></button></li>
-                <li><button><a href="/add/<%= data.user_id %>/food">Add Food</a></button></li>
-                <li><button><a href="/add/<%= data.user_id %>/exercise">Add Exercise</a></button></li>
-
-        
-
-            </ul>
-          </nav>
-        </header>
+    <header class="page-links">
+      <nav>
+        <h1>MacTrack</h1>
+        <ul>
+          <li><a href="/dash/<%= data.user_id %>"><button>Dashboard</button></a></li>
+          <li><a href="/add/<%= data.user_id %>/food"><button>Add Food</button></a></li>
+          <li><a href="/add/<%= data.user_id %>/exercise"><button>Add Exercise</button></a></li>
+        </ul>
+      </nav>
+    </header>
     <% if(data.type === 'new_food'){ %>
       <!-- Blank Food Form -->
-      <form action="/save" method="POST">
+      <form action="/save" method="POST" class="custom">
         
         <input type="hidden" name="user_id" value=<%= data.user_id %>>
         <input type="hidden" name="type" value="food">
         
         <label for="name">
-          Name
+          Name:<br> 
           <input type="text" name="name" placeholder="Name"><br>
         </label>
         <label for="image_url">
-          Image URL
+          Image URL: <br>
           <input type="text" name="image_url" placeholder="Image URL"><br>
         </label>
         <label for="protein">
-          Protein
+          Protein: <br>
           <input type="text" name="protein" placeholder="Protein"><br>
         </label>
         <label for="fat">
-          Fat
+          Fat: <br>
           <input type="text" name="fat" placeholder="Fat"><br>
         </label>
         <label for="carbs">
-          Carbs
+          Carbs: <br>
           <input type="text" name="Carbs" placeholder="Carbs"><br>
         </label>
         <label for="serving_size">
-          Serving Size
+          Serving Size: <br>
           <input type="text" name="serving_size" placeholder="Serving Size"><br>
         </label>
         <label for="serving_unit">
-          Serving Unit
+          Serving Unit: <br>
           <input type="text" name="serving_unit" placeholder="Serving Unit"><br>
         </label>
         
-        <input type="submit" value="Submit">
+        <button type="submit" value="Submit">Submit</button>
   
       </form>
 
     <% } else if(data.type === 'food'){ %>
      
-      <form action="/save" method="POST">
+      <form action="/save" method="POST" class="custom">
 
         <input type="hidden" name="user_id" value=<%= data.user_id %>>
         <input type="hidden" name="type" value="food">
@@ -68,35 +66,35 @@
         <img src=<%= data.image_url %> alt=<%= data.name %>>
         <br>
         <label for="name">
-          Name
+          Name: <br>
           <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
         </label>
         <label for="image_url">
-          Image URL
+          Image URL:<br>
           <input type="text" name="image_url" placeholder="Image URL" value=<%= data.image_url %>><br>
         </label>
         <label for="protein">
-          Protein
+          Protein: <br>
           <input type="text" name="protein" placeholder="Protein" value=<%= data.protein %>><br>
         </label>
         <label for="fat">
-          Fat
+          Fat: <br>
           <input type="text" name="fat" placeholder="Fat" value=<%= data.fat %>><br>
         </label>
         <label for="carbs">
-          Carbs
+          Carbs: <br>
           <input type="text" name="carbs" placeholder="carbs" value=<%= data.carbs %>><br>
         </label>
         <label for="calories">
-          calories
+          Calories: <br>
           <input type="text" name="calories" placeholder="calories" value=<%= data.calories %>><br>
         </label>
         <label for="serving_size">
-          Serving Size
+          Serving Size: <br>
           <input type="text" name="serving_size" placeholder="Serving Size" value=<%= data.serving_size %>><br>
         </label>
         <label for="serving_unit">
-          Serving Unit
+          Serving Unit: <br>
           <input type="text" name="serving_unit" placeholder="Serving Unit" value=<%= data.serving_unit %>><br>
         </label>
         
@@ -104,47 +102,48 @@
 
       </form>
     <% } else if(data.type === 'exercise'){ %>
-      <form action="/save" method="POST">
+      <form action="/save" method="POST" class="custom">
         <input type="hidden" name="user_id" value=<%= data.user_id %>>
         <input type="hidden" name="type" value="exercise">
 
         <img src=<%= data.image_url %> alt=<%= data.name %>>
-        
+        <br>
         <label for="name">
-          Name
-          <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
-        </label>
+            Name: <br>
+            <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
+          </label>
         <label for="image_url">
-          Image URL
+          Image URL: <br>
           <input type="text" name="image_url" placeholder="Image URL"value=<%= data.image_url %>><br>
         </label>
         <label for="calories">
-          Calories
+          Calories: <br>
           <input type="text" name="calories" placeholder="Calories"value=<%= data.calories %>><br>
         </label>
         
-        <input type="submit" value="Submit">
+        <button type="submit" value="Submit">Submit</button>
     <% } else if(data.type === 'new_exercise'){ %>
-      <form action="/save" method="POST">
+      <form action="/save" method="POST" class="custom">
         
         <input type="hidden" name="user_id" value=<%= data.user_id %>>
         <input type="hidden" name="type" value="exercise">
 
         <label for="name">
-          Name
-          <input type="text" name="name" placeholder="Name"><br>
-        </label>
+            Name:<br> 
+            <input type="text" name="name" placeholder="Name"><br>
+          </label>
         <label for="image_url">
-          Image URL
+          Image URL: <br>
           <input type="text" name="image_url" placeholder="Image URL"><br>
         </label>
         <label for="carbs">
-          Calories
+          Calories: <br>
           <input type="text" name="calories" placeholder="Calories"><br>
         </label>
         
-        <input type="submit" value="Submit">
+        <button type="submit" value="Submit">Submit</button>
     <% } %>
   </main>
+  <%- include('../partials/footer.ejs') %>
 </body>
 </html>
