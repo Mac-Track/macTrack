@@ -278,3 +278,47 @@ footer.footer-partial a {
   position: relative;
   top: 3px;
 }
+
+/* ========== */
+/*  Register  */
+/* ========== */
+
+.register {
+  width: 450px;
+  margin: 20px auto 80px auto;
+  text-align: center !important;
+  font-family: 'Roboto', sans-serif;
+  background-color: rgb(28, 185, 237);
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 15px;
+}
+
+.register input {
+  display: block;
+  margin: 15px auto 15px auto;
+}
+
+.register button {
+  height: 30px;
+  border: none;
+  margin: 15px 0 0 0;
+  font-size: 18px;
+  font-family: 'Roboto', sans-serif;
+  background-color: rgb(18, 210, 133);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 2px 2px rgb(99, 99, 100);
+}
+
+.register button:hover {
+  background-color: rgb(95, 245, 185);
+  position: relative;
+  top: -2px;
+}
+
+.register button:active {
+  background-color: rgb(16, 168, 107);
+  position: relative;
+  top: 3px;
+}
