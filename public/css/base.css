@@ -84,9 +84,11 @@
   /* width: 300px; */
 }
 .p {
-float: left;
-width: 600px;
-font-size: 24px;
+  float: left;
+  font-size: 24px;
+  width: 500px;
+  word-break: break-word;
+  white-space: normal;
 }
 .footer {
 font-size: 14px;
@@ -115,4 +117,25 @@ font-size: 14px;
   top: 50%;
   width: 100%;
 }
+
+
+
+.btn{
+  border-radius: 4px;  
+  cursor: pointer;
+  padding: 8px 16px;
+  
+}
+
+.btn:hover{
+   background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red);
+   animation:slidebg 2s linear infinite;
+}
+
+@keyframes slidebg {
+  to {
+    background-position:20vw;
+  }
+}
+
 

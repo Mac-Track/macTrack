@@ -7,13 +7,19 @@
 <body>
   <main>
     <header class="page-links">
-      <nav>
+      <nav role="navigation">
+        <div id="menuToggle">
+            <input type="checkbox" />
         <h1>MacTrack</h1>
-        <ul>
+        <span></span>
+        <span></span>
+        <span></span>
+        <ul id="menu">
           <li><a href="/dash/<%= data.user_id %>"><button>Dashboard</button></a></li>
           <li><a href="/add/<%= data.user_id %>/food"><button>Add Food</button></a></li>
-          <li><a href="/add/<%= data.user_id %>/exercise"><button>Add Exercise</button></a></li>
+          <li><a href="/add/<%= data.user_id %>/exercise" target="_blank"><button>Add Exercise</button></a></li>
         </ul>
+      </div>
       </nav>
     </header>
     <% if(data.type === 'new_food'){ %>
@@ -52,7 +58,7 @@
           <input type="text" name="serving_unit" placeholder="Serving Unit"><br>
         </label>
         
-        <button type="submit" value="Submit">Submit</button>
+        <button class="btn" type="submit" value="Submit">Submit</button>
   
       </form>
 
@@ -144,6 +150,9 @@
         <button type="submit" value="Submit">Submit</button>
     <% } %>
   </main>
+
   <%- include('../partials/footer.ejs') %>
+
 </body>
 </html>
+
