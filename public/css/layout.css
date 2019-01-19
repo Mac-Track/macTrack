@@ -190,13 +190,19 @@ footer.footer-partial a {
   font-size: 30px;
   font-weight: bold;
   text-shadow: 1px 2px 2px rgb(93, 93, 93);
-  display: inline;
+  display: block;
   color: rgb(232, 65, 16);
-  margin: 0 0 15px 30px;
+  margin: 0 0 15px 60px;
+}
+
+.search {
+  height: 30px;
+  font-size: 18px;
+  border-radius: 5px;
 }
 
 .options {
-  height: 100px;
+  /* height: 100px; */
   margin: auto;
   max-width: 300px;
   text-align: center;
@@ -321,4 +327,24 @@ footer.footer-partial a {
   background-color: rgb(16, 168, 107);
   position: relative;
   top: 3px;
+}
+
+/* ========== */
+/*    Error   */
+/* ========== */
+
+.error {
+  text-align: center;
+}
+
+.error h1 {
+  font-size: 50px;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 30px;
+}
+
+.error img {
+  margin-top: 20px;
+  width: 300px;
+  box-shadow: 2px 4px 4px rgb(99, 99, 100);
 }
