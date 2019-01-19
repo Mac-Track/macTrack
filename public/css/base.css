@@ -62,16 +62,17 @@
   
 .homepage { 
   background:
-    linear-gradient(
-      rgba(0, 0, 0, 0.5),
+/* commented out darken aspect for presentation */
+    /* linear-gradient(
+      rgba(133, 129, 129, 0.5),
       rgba(0, 0, 0, 0.5)
-    ),
+    ), */
   url(../images/stretch.jpg);
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(105, 100, 100, 0.5);
   font-size: 2em; 
   color:rgb(240, 243, 237);
   padding-top: 50px;
