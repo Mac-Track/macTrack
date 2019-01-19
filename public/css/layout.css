@@ -190,13 +190,19 @@ footer.footer-partial a {
   font-size: 30px;
   font-weight: bold;
   text-shadow: 1px 2px 2px rgb(93, 93, 93);
-  display: inline;
+  display: block;
   color: rgb(232, 65, 16);
-  margin: 0 0 15px 30px;
+  margin: 0 0 15px 60px;
+}
+
+.search {
+  height: 30px;
+  font-size: 18px;
+  border-radius: 5px;
 }
 
 .options {
-  height: 100px;
+  /* height: 100px; */
   margin: auto;
   max-width: 300px;
   text-align: center;
