@@ -11,7 +11,7 @@
     color: black;
     font-size:56px;
     font-family:arial;
-    border-width: 50px;
+    border-width: 80px;
     border-style: solid;
     border-image-source: url("/image/Leaf.png")
 }
@@ -22,9 +22,6 @@
     grid-column-gap: 0%;
     grid-template-rows: auto auto auto auto;
     grid-row-gap: 0%;
-}
-
-#dash-table {
 }
 
 #dash-table tr {
@@ -38,9 +35,9 @@
 
 #chartSize {
     background-color: lightcyan;
-    width: 50%;
+    width: 40%;
     float: right;
-    margin-top: -25%;
+    margin-top: -20%;
 }
 
 

@@ -51,7 +51,7 @@ client.on('error', err => console.log('||||||||||||||||||||||||client error|||||
 app.get('/', renderHome);
 
 function renderHome(req, res){
-  res.render('pages/index.ejs');
+  res.render('pages/index.ejs')
 }
 
 /////////sign_in////////////
@@ -62,7 +62,13 @@ function signIn (req, res){
   let values = [req.body.user];
   return client.query(sql, values)
   .then(result => {
-    res.redirect(`/dash/${result.rows[0].id}`);
+    if(result.rows[0] == undefined) {
+      res.redirect('http://localhost:3000/'); // This ends the response sending process by reloading page
+    }
+    else {
+
+      res.redirect(`/dash/${result.rows[0].id}`);
+    }
   })
   .catch(err => console.log('||||||||||||||||||||||||sign-in error|||||||||||||||||||||||', err));
 }
@@ -114,11 +120,10 @@ function renderAdd(req, res){
   }
   
   let sql = `SELECT * FROM ${table} WHERE fk_users=$1;`;
-  console.log(sql);
   let client_id = [id];
   return client.query(sql, client_id)
   .catch(err => console.log('||||||||||||||||||||||||SQL error|||||||||||||||||||||||', err))
-    .then(data => {
+  .then(data => {
       res.render('pages/add.ejs', {entries: data.rows, search_type: type, user_id: id});
     })
     .catch(err => console.log('||||||||||||||||||||||||renderAdd error|||||||||||||||||||||||', err));
@@ -146,6 +151,9 @@ app.post('/search', search);
 
 function search(req, res){
   let data = req.body;
+  if(req.body.query === '') {
+    res.send('Invalid Input');
+  }
   let type = data.search_type;
   let id = data.user_id;
   let url = `https://trackapi.nutritionix.com/v2/`;
@@ -167,7 +175,6 @@ function foodSearch(url, id, res){
   .then(result => {
     let common = JSON.parse(result.res.text);
     let branded = JSON.parse(result.res.text);
-
     let foods = [];
     for(let i = 0; i < 10; i++){
       // COMMON
@@ -200,7 +207,6 @@ function foodSearch(url, id, res){
 
       foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
     }
-
     res.render('pages/results.ejs', {data: foods, search_type: 'food', user_id: id});
   })
   .catch(err => console.log('||||||||||||||||||||||||foodSearch error|||||||||||||||||||||||', err));
