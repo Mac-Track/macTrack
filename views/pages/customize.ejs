@@ -31,31 +31,35 @@
         
         <label for="name">
           Name:<br> 
-          <input type="text" name="name" placeholder="Name"><br>
+          <input type="text" name="name" placeholder="Name" required><br>
         </label>
         <label for="image_url">
           Image URL: <br>
-          <input type="text" name="image_url" placeholder="Image URL"><br>
+          <input type="text" name="image_url" placeholder="Image URL" required><br>
         </label>
         <label for="protein">
           Protein: <br>
-          <input type="text" name="protein" placeholder="Protein"><br>
+          <input type="number" name="protein" placeholder="Protein" required><br>
         </label>
         <label for="fat">
           Fat: <br>
-          <input type="text" name="fat" placeholder="Fat"><br>
+          <input type="number" name="fat" placeholder="Fat" required><br>
         </label>
         <label for="carbs">
           Carbs: <br>
-          <input type="text" name="Carbs" placeholder="Carbs"><br>
+          <input type="number" name="Carbs" placeholder="Carbs" required><br>
+        </label>
+        <label for="calories">
+          Calories: <br>
+          <input type="number" name="calories" placeholder="calories" required><br>
         </label>
         <label for="serving_size">
           Serving Size: <br>
-          <input type="text" name="serving_size" placeholder="Serving Size"><br>
+          <input type="text" name="serving_size" placeholder="Serving Size" required><br>
         </label>
         <label for="serving_unit">
           Serving Unit: <br>
-          <input type="text" name="serving_unit" placeholder="Serving Unit"><br>
+          <input type="text" name="serving_unit" placeholder="Serving Unit" required><br>
         </label>
         
         <button class="btn" type="submit" value="Submit">Submit</button>
@@ -73,35 +77,35 @@
         <br>
         <label for="name">
           Name: <br>
-          <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
+          <input type="text" name="name" placeholder="Name" value=<%= data.name %> required><br>
         </label>
         <label for="image_url">
           Image URL:<br>
-          <input type="text" name="image_url" placeholder="Image URL" value=<%= data.image_url %>><br>
+          <input type="text" name="image_url" placeholder="Image URL" value=<%= data.image_url %> required><br>
         </label>
         <label for="protein">
           Protein: <br>
-          <input type="text" name="protein" placeholder="Protein" value=<%= data.protein %>><br>
+          <input type="number" name="protein" placeholder="Protein" value=<%= data.protein %> required><br>
         </label>
         <label for="fat">
           Fat: <br>
-          <input type="text" name="fat" placeholder="Fat" value=<%= data.fat %>><br>
+          <input type="number" name="fat" placeholder="Fat" value=<%= data.fat %> required><br>
         </label>
         <label for="carbs">
           Carbs: <br>
-          <input type="text" name="carbs" placeholder="carbs" value=<%= data.carbs %>><br>
+          <input type="number" name="carbs" placeholder="carbs" value=<%= data.carbs %> required><br>
         </label>
         <label for="calories">
           Calories: <br>
-          <input type="text" name="calories" placeholder="calories" value=<%= data.calories %>><br>
+          <input type="number" name="calories" placeholder="calories" value=<%= data.calories %> required><br>
         </label>
         <label for="serving_size">
           Serving Size: <br>
-          <input type="text" name="serving_size" placeholder="Serving Size" value=<%= data.serving_size %>><br>
+          <input type="text" name="serving_size" placeholder="Serving Size" value=<%= data.serving_size %> required><br>
         </label>
         <label for="serving_unit">
           Serving Unit: <br>
-          <input type="text" name="serving_unit" placeholder="Serving Unit" value=<%= data.serving_unit %>><br>
+          <input type="text" name="serving_unit" placeholder="Serving Unit" value=<%= data.serving_unit %> required><br>
         </label>
         
         <button type="submit">Submit</button>
@@ -116,15 +120,15 @@
         <br>
         <label for="name">
             Name: <br>
-            <input type="text" name="name" placeholder="Name" value=<%= data.name %>><br>
+            <input type="text" name="name" placeholder="Name" value=<%= data.name %> required><br>
           </label>
         <label for="image_url">
           Image URL: <br>
-          <input type="text" name="image_url" placeholder="Image URL"value=<%= data.image_url %>><br>
+          <input type="text" name="image_url" placeholder="Image URL"value=<%= data.image_url %> required><br>
         </label>
         <label for="calories">
           Calories: <br>
-          <input type="text" name="calories" placeholder="Calories"value=<%= data.calories %>><br>
+          <input type="number" name="calories" placeholder="Calories"value=<%= data.calories %> required><br>
         </label>
         
         <button type="submit" value="Submit">Submit</button>
@@ -136,15 +140,15 @@
 
         <label for="name">
             Name:<br> 
-            <input type="text" name="name" placeholder="Name"><br>
+            <input type="text" name="name" placeholder="Name" required><br>
           </label>
         <label for="image_url">
           Image URL: <br>
-          <input type="text" name="image_url" placeholder="Image URL"><br>
+          <input type="text" name="image_url" placeholder="Image URL" required><br>
         </label>
         <label for="carbs">
           Calories: <br>
-          <input type="text" name="calories" placeholder="Calories"><br>
+          <input type="number" name="calories" placeholder="Calories" required><br>
         </label>
         
         <button type="submit" value="Submit">Submit</button>
