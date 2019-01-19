@@ -184,13 +184,13 @@ function foodSearch(url, id, res){
       let commonCalories = 0;
 
       for(let j = 0; j < common.common[i].full_nutrients.length; j++){
-        if(common.common[i].full_nutrients[j].attr_id === 203) commonProtein = common.common[i].full_nutrients[j].value;
-        if(common.common[i].full_nutrients[j].attr_id === 204) commonFat = common.common[i].full_nutrients[j].value;
-        if(common.common[i].full_nutrients[j].attr_id === 205) commonCarbs = common.common[i].full_nutrients[j].value;
-        if(common.common[i].full_nutrients[j].attr_id === 208) commonCalories = common.common[i].full_nutrients[j].value;
+        if(common.common[i].full_nutrients[j].attr_id === 203) commonProtein = Math.round(common.common[i].full_nutrients[j].value * 10) / 10;
+        if(common.common[i].full_nutrients[j].attr_id === 204) commonFat = Math.round(common.common[i].full_nutrients[j].value * 10) / 10;
+        if(common.common[i].full_nutrients[j].attr_id === 205) commonCarbs = Math.round(common.common[i].full_nutrients[j].value * 10) / 10;
+        if(common.common[i].full_nutrients[j].attr_id === 208) commonCalories = Math.round(common.common[i].full_nutrients[j].value * 10) / 10;
       }
       
-      foods.push(new Food(common.common[i].food_name, common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit));
+      foods.push(new Food(common.common[i].food_name.toUpperCase(), common.common[i].photo.thumb, commonCalories, commonCarbs, commonFat, commonProtein, common.common[i].serving_qty, common.common[i].serving_unit));
 
       // BRANDED
       let brandedProtein = 0;
@@ -199,13 +199,13 @@ function foodSearch(url, id, res){
       let brandedCalories = 0;
 
       for(let k = 0; k < branded.branded[i].full_nutrients.length; k++){
-        if(branded.branded[i].full_nutrients[k].attr_id === 203) brandedProtein = branded.branded[i].full_nutrients[k].value;
-        if(branded.branded[i].full_nutrients[k].attr_id === 204) brandedFat = branded.branded[i].full_nutrients[k].value;
-        if(branded.branded[i].full_nutrients[k].attr_id === 205) brandedCarbs = branded.branded[i].full_nutrients[k].value;
-        if(branded.branded[i].full_nutrients[k].attr_id === 208) brandedCalories = branded.branded[i].full_nutrients[k].value;
+        if(branded.branded[i].full_nutrients[k].attr_id === 203) brandedProtein = Math.round(branded.branded[i].full_nutrients[k].value * 10) / 10;
+        if(branded.branded[i].full_nutrients[k].attr_id === 204) brandedFat = Math.round(branded.branded[i].full_nutrients[k].value * 10) / 10;
+        if(branded.branded[i].full_nutrients[k].attr_id === 205) brandedCarbs = Math.round(branded.branded[i].full_nutrients[k].value * 10) / 10;
+        if(branded.branded[i].full_nutrients[k].attr_id === 208) brandedCalories = Math.round(branded.branded[i].full_nutrients[k].value * 10) / 10;
       }
 
-      foods.push(new Food(branded.branded[i].food_name, branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
+      foods.push(new Food(branded.branded[i].food_name.toUpperCase(), branded.branded[i].photo.thumb, brandedCalories, brandedCarbs, brandedFat, brandedProtein, branded.branded[i].serving_qty, branded.branded[i].serving_unit));
     }
     res.render('pages/results.ejs', {data: foods, search_type: 'food', user_id: id});
   })

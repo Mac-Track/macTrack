@@ -21,9 +21,9 @@
           <div id="addDash">
             <img src=<%= food.image_url %>>
             <h2> <%= food.name %> </h2>
-            <p> Protein: <%= food.protein %> </p>
-            <p> Fat: <%= food.fat %> </p>
-            <p> Carbs: <%= food.carbs %> </p>
+            <p> Protein: <%= food.protein %>g </p>
+            <p> Fat: <%= food.fat %>g </p>
+            <p> Carbs: <%= food.carbs %>g </p>
             <p> Calories: <%= food.calories %> </p>
             <form action="/delete/<%= user_id %>/<%= food.id %>/food_entry" method="POST">
               <input type="hidden" name="_method" value="DELETE">
@@ -104,9 +104,9 @@
         var myChart = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ["Protein", "Fat", "Carbs", "Calories"],
+            labels: ["Protein: <%= macro_targets.protein %>g", "Fat: <%= macro_targets.fat %>g", "Carbs: <%= macro_targets.carbs %>g", "Calories: <%= macro_targets.calories %>"],
             datasets: [{
-              label: 'Nutrition',
+              label: '% Towards Goal',
               data: ["<%= proteinPercent %>", "<%= fatPercent %>", "<%= carbPercent %>", "<%= caloriePercent %>"],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.8)',
