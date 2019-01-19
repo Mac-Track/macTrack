@@ -5,10 +5,11 @@
     <title>Food Entry</title>
 </head>
 <body>
-    <header>
+    <header class="page-links">
         <nav>
+            <h1>MacTrack</h1>
             <ul>
-                <li><button><a href="/dash/<%= user_id %>"">Dashboard</a></button></li>
+                <li><a href="/dash/<%= user_id %>""><button>Dashboard</button></a></li>
                 <% let addUrl = '/add/' %>
                 <% let addStr = 'Add ' %>
                 <% if(search_type === 'food') { %>
@@ -18,32 +19,34 @@
                     <% addUrl += user_id + '/food' %>
                     <% addStr += 'Food'; %>
                 <% } %>
-                    <li><button><a href=<%= addUrl %>><%= addStr %></a></button></li>
+                    <li><a href=<%= addUrl %>><button><%= addStr %></button></a></li>
             </ul>
         </nav>
     </header>
-    <form action="/search" method="POST">
-        <input type="text" name="query">
-        <input type="hidden" name="search_type" value=<%= search_type %>>
-        <input type="hidden" name="user_id" value=<%= user_id %>>
-        <button type="submit">Search Nutritionix</button>
-    </form>
+    <section class="options">
+        <form action="/search" method="POST">
+            <input type="text" name="query" placeholder="Search <%= search_type %>s">
+            <input type="hidden" name="search_type" value=<%= search_type %>>
+            <input type="hidden" name="user_id" value=<%= user_id %>>
+            <button type="submit">Search Nutritionix</button>
+        </form>
+    
+        <form action="/custom" method="POST">
+            <% let customType = ''; %>
+            <% if(search_type === 'food') customType = 'new_food'; %>
+            <% if(search_type === 'exercise') customType = 'new_exercise'; %>
+    
+            <input type="hidden" name="type" value=<%= customType %>>
+            <input type="hidden" name="user_id" value=<%= user_id %>>
+            <button type="submit">Create Custom Entry</button>
+        </form>
+    </section>
 
-    <form action="/custom" method="POST">
-        <% let customType = ''; %>
-        <% if(search_type === 'food') customType = 'new_food'; %>
-        <% if(search_type === 'exercise') customType = 'new_exercise'; %>
-
-        <input type="hidden" name="type" value=<%= customType %>>
-        <input type="hidden" name="user_id" value=<%= user_id %>>
-        <button type="submit">Create Custom Entry</button>
-    </form>
-
-    <h1>History:</h1>
-        <section>
+    <h1 class="add-history">History:</h1>
+        <section class="all-results">
             <% if(search_type === 'food') { %>
                 <% entries.forEach(entry => { %>
-                    <div>
+                    <div class="single-result">
                         <img src=<%= entry.image_url %>>
                         <h2><%= entry.name %></h2>
                         <p>Calories: <%= entry.calories %></p>
@@ -61,13 +64,13 @@
                             <input type="hidden" name="serving_unit" value=<%= entry.serving_unit %>>
                             <input type="hidden" name="user_id" value=<%= user_id %>>
                             <input type="hidden" name="type" value="food">
-                            <button type="submit">Add <%= entry.name %> From History</button>
+                            <button class="add-button" type="submit">Add From History</button>
                         </form>
                     </div>
                 <% }) %>
             <% } else if(search_type === 'exercise') {%>
                 <% entries.forEach(entry => { %>
-                    <div>
+                    <div class="single-result">
                         <img src=<%= entry.image_url %>>
                         <h2><%= entry.name %></h2>
                         <p>Calories Burned: <%= entry.calories %></p>
@@ -77,12 +80,12 @@
                             <input type="hidden" name="image_url" value=<%= entry.image_url %>>
                             <input type="hidden" name="user_id" value=<%= user_id %>>
                             <input type="hidden" name="type" value="exercise">
-                            <button type="submit">Add <%= entry.name %> From History</button>
+                            <button class="add-button" type="submit">Add From History</button>
                         </form>
                     </div>
                 <% }) %>
             <% } %>
         </section>
-
+        <%- include('../partials/footer.ejs') %>
 </body>
 </html>
