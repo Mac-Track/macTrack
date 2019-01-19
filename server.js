@@ -98,7 +98,7 @@ function saveRegistration (req, res){
     .then(result => {
       res.redirect(`/dash/${result.rows[0].id}`);
     })
-    .catch(err => console.log('||||||||||||||||||||||||saveRegistration error|||||||||||||||||||||||', err));
+    .catch(err => res.render('/pages/error.ejs'));
 }
 
 /////////dash.ejs///////////
