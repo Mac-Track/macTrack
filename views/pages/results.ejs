@@ -21,7 +21,7 @@
 
       <% if(search_type === 'food'){ %>
         <% data.forEach(food => { %>
-          <div class="food-result">
+          <div class="single-result">
             <h2><%= food.name %></h2>
             <img src=<%= food.image_url %> alt=<%= food.name %>>
             <p>Serving Size: <%= food.serving_size %></p>
@@ -48,7 +48,7 @@
         <% }) %>
   
       <% } else if(search_type === 'exercise'){ %>
-        <div class="exercise-result">
+        <div class="single-result">
             <h2><%= data.name %></h2>
             <img src=<%= data.image_url %> alt=<%= data.name %>>
             <p>Calories Burned: <%= data.calories %></p>
