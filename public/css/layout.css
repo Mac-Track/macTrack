@@ -328,3 +328,23 @@ footer.footer-partial a {
   position: relative;
   top: 3px;
 }
+
+/* ========== */
+/*    Error   */
+/* ========== */
+
+.error {
+  text-align: center;
+}
+
+.error h1 {
+  font-size: 50px;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 30px;
+}
+
+.error img {
+  margin-top: 20px;
+  width: 300px;
+  box-shadow: 2px 4px 4px rgb(99, 99, 100);
+}

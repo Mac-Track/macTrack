@@ -209,7 +209,7 @@ function foodSearch(url, id, res){
     }
     res.render('pages/results.ejs', {data: foods, search_type: 'food', user_id: id});
   })
-  .catch(err => console.log('||||||||||||||||||||||||foodSearch error|||||||||||||||||||||||', err));
+  .catch(err => res.render('pages/error.ejs'));
 }
 
 function exerciseSearch(url, id, query, res){
@@ -236,7 +236,7 @@ function exerciseSearch(url, id, query, res){
           res.render('pages/results.ejs', {data: exerciseData, search_type: 'exercise', user_id: id});
         })
     })
-    .catch(err => console.log('||||||||||||||||||||||||exerciseSearch error|||||||||||||||||||||||', err));
+    .catch(err => res.send('Invalid input :('));
 }
   
   
