@@ -128,7 +128,7 @@ font-size: 14px;
 }
 
 .btn:hover{
-   background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet, red);
+   background-image: linear-gradient(to right, black, white, lightgray, green, lightgreen, beige);
    animation:slidebg 2s linear infinite;
 }
 
