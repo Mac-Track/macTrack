@@ -84,11 +84,12 @@
   /* width: 300px; */
 }
 .p {
-  float: left;
-  font-size: 24px;
-  width: 500px;
-  word-break: break-word;
-  white-space: normal;
+    float: left;
+    font-size: 24px;
+    width: 500px;
+    word-break: break-word;
+    white-space: normal;
+    margin-left: 2%;;
 }
 .footer {
 font-size: 14px;
