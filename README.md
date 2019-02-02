@@ -9,3 +9,6 @@ The MVP of MacTrack will allow a user to generate an initial set of macronutrien
 - Allow a user to tweak their macronutrient targets or change variables that will recalculate their target for them. 
 - Create a page for a week view of their progress and an average for the week.
 - Allow user to change entries for previous days
+
+## Resources
+#### Homepage Photo (https://pixabay.com/en/users/ryanmcguire-123690/)
