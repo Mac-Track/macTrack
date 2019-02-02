@@ -11,4 +11,4 @@ The MVP of MacTrack will allow a user to generate an initial set of macronutrien
 - Allow user to change entries for previous days
 
 ## Resources
-#### Main Photo (https://pixabay.com/en/users/ryanmcguire-123690/)
+#### Homepage Photo (https://pixabay.com/en/users/ryanmcguire-123690/)
